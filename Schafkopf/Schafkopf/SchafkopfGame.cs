@@ -18,12 +18,31 @@ namespace Schafkopf
 
     public class SchafkopfGame
     {
-        public List<Card> Cards { get; private set; }
+        public List<Player> Players { get; private set; }
 
         public SchafkopfGame()
         {
-            Cards = Enum.GetValues(typeof(Card)).Cast<Card>().ToList();
+            Players = new List<Player>();
+            var allCards = Enum.GetValues(typeof(Card)).Cast<Card>().ToList();
+            for (int i = 0; i < 4; i++)
+            {
+                Players.Add(new Player(GetCards(allCards)));
+            }
+        }
 
+        private static List<Card> GetCards(List<Card> cards)
+        {
+            Random random = new Random(System.DateTime.Now.Millisecond.GetHashCode());
+
+            Card[] cardsForPlayer = new Card[8];
+            for (int i = 0; i < 8; i++)
+            {
+                int cardIndex = random.Next(0, cards.Count() - 1);
+                var cardToAdd = cards[cardIndex];
+                cards.Remove(cardToAdd);
+                cardsForPlayer[i] = cardToAdd;
+            }
+            return cardsForPlayer.ToList();
         }
     }
 }
