@@ -8,11 +8,11 @@ namespace Schafkopf
 {
     public class Player
     {
-        public List<Card> Cards { get; private set; }
+        private List<Card> _cards;
 
         public Player(List<Card> cards)
         {
-            Cards = cards;
+            _cards = cards;
         }
     }
 }

@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Schafkopf
 {
-    
+    /// <summary>
+    /// Contains the cards for the Game
+    /// </summary>
     public enum Card
     {
         //7 8 9 10 U O K A
@@ -16,33 +18,61 @@ namespace Schafkopf
         S7, S8, S9, S10, SU, SO, SK, SA, //Schellen
     }
 
+    /// <summary>
+    /// The Game
+    /// </summary>
     public class SchafkopfGame
     {
+        /// <summary>
+        /// Contains the Players
+        /// </summary>
         public List<Player> Players { get; private set; }
 
+        /// <summary>
+        /// Creates the Players and distributes the cards
+        /// </summary>
         public SchafkopfGame()
-        {
-            Players = new List<Player>();
-            var allCards = Enum.GetValues(typeof(Card)).Cast<Card>().ToList();
-            for (int i = 0; i < 4; i++)
-            {
-                Players.Add(new Player(GetCards(allCards)));
-            }
+        {          
+            var cards = CreateAllCards();
+            Players = CreatePlayers(cards);
         }
 
-        private static List<Card> GetCards(List<Card> cards)
+        private static List<Card> CreateAllCards()
         {
-            Random random = new Random(System.DateTime.Now.Millisecond.GetHashCode());
+            return Enum.GetValues(typeof(Card)).Cast<Card>().ToList();
+        }
 
-            Card[] cardsForPlayer = new Card[8];
+        private static List<Player> CreatePlayers(List<Card> cards)
+        {
+            var players = new List<Player>();
+            for (int i = 0; i < 4; i++)
+            {
+                players.Add(new Player(DistributeCards(cards)));
+            }
+            return players;
+        }     
+
+        private static List<Card> DistributeCards(List<Card> cards)
+        {
+            List<Card> cardsForPlayer = new List<Card>();
             for (int i = 0; i < 8; i++)
             {
-                int cardIndex = random.Next(0, cards.Count() - 1);
-                var cardToAdd = cards[cardIndex];
-                cards.Remove(cardToAdd);
-                cardsForPlayer[i] = cardToAdd;
+                GiveCard(cards, cardsForPlayer);
             }
             return cardsForPlayer.ToList();
+        }        
+
+        private static void GiveCard(List<Card> cards, List<Card> cardsForPlayer)
+        {
+            int cardIndex = RandomCardNumber(cards);
+            var cardToAdd = cards[cardIndex];
+            cards.Remove(cardToAdd);
+            cardsForPlayer.Add(cardToAdd);
+        }
+
+        private static int RandomCardNumber(List<Card> cards)
+        {
+            return new Random(System.DateTime.Now.Millisecond.GetHashCode()).Next(0, cards.Count() - 1);
         }
     }
 }
