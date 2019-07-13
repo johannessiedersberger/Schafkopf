@@ -6,13 +6,24 @@ using System.Threading.Tasks;
 
 namespace Schafkopf
 {
-    public class Player
-    {
-        private List<Card> _cards;
+  public class Player
+  {
+    private List<Card> _cards;
 
-        public Player(List<Card> cards)
-        {
-            _cards = cards;
-        }
+    public List<Card> Cards
+    {
+      get
+      {
+        var copy = new Card[8];
+        _cards.CopyTo(copy);
+        return copy.ToList();
+
+      }
     }
+
+    public Player(List<Card> cards)
+    {
+      _cards = cards;
+    }
+  }
 }
