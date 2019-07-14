@@ -20,8 +20,6 @@ namespace Schafkopf
       return listToClone.Select(item => (T)item.Clone()).ToList();
     }
 
-    
-
     public static Color GetColor(this Card card)
     {
       var cardId = card.ToString();
