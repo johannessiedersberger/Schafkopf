@@ -34,17 +34,5 @@ namespace Schafkopf
     }
 
     
-    
-
-    
-
-
-
-
-
-
-
-
-
   }
 }
