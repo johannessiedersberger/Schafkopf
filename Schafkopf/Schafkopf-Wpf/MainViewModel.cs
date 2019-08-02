@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NUnit.Framework;
 
-namespace Schafkopf_Test
+namespace Schafkopf_Wpf
 {
-  class SauspielTest
+  public class MainViewModel
   {
-
   }
 }

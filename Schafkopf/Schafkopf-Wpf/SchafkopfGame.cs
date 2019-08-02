@@ -37,6 +37,16 @@ namespace Schafkopf
       Players = CreatePlayers(cards);
     }
 
+    /// <summary>
+    /// Create game with predifined Players
+    /// for Test Purposes
+    /// </summary>
+    /// <param name="players"></param>
+    internal SchafkopfGame(List<Player> players)
+    {
+      Players = players;
+    }
+
     #region CardDistribution
     private static List<Card> CreateAllCards()
     {

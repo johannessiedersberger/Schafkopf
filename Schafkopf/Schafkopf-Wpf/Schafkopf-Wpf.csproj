@@ -55,7 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Sauspiel.cs" />
+    <Compile Include="MainViewModel.cs" />
+    <Compile Include="GameTypes\Sauspiel.cs" />
     <Compile Include="SchafkopfGame.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -97,6 +98,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\2000px-Bay_schellen.svg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\2000px-Bay_eichel.svg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\2000px-Bay_gras.svg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\2000px-Bay_herz.svg.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

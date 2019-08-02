@@ -17,7 +17,6 @@ namespace Schafkopf
         var copy = new Card[8];
         _cards.CopyTo(copy);
         return copy.ToList();
-
       }
     }
 

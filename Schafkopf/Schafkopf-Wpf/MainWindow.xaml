@@ -6,7 +6,18 @@
         xmlns:local="clr-namespace:Schafkopf_Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+  <Window.DataContext>
+    <local:MainViewModel/>
+  </Window.DataContext>
     <Grid>
-        
-    </Grid>
+    <ListBox HorizontalAlignment="Center" Height="50" VerticalAlignment="Top" Width="400">
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+    </ListBox>
+    
+
+  </Grid>
 </Window>
