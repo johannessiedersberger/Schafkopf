@@ -12,10 +12,10 @@ namespace Schafkopf
   public enum Card
   {
     //7 8 9 10 U O K A
-    E7, E8, E9, E10, EU, EO, EK, EA, //Eichel
-    G7, G8, G9, G10, GU, GO, GK, GA, //Gras
-    H7, H8, H9, H10, HU, HO, HK, HA, //Herz
-    S7, S8, S9, S10, SU, SO, SK, SA, //Schellen
+    E7, E8, E9, E10, EU, EO, EK, EA, // Eichel
+    G7, G8, G9, G10, GU, GO, GK, GA, // Gras
+    H7, H8, H9, H10, HU, HO, HK, HA, // Herz
+    S7, S8, S9, S10, SU, SO, SK, SA, // Schellen
   }
 
   /// <summary>
