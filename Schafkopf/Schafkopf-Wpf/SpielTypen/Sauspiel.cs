@@ -45,25 +45,56 @@ namespace Schafkopf_Wpf
         throw new InvalidOperationException("No Partner Found");
     }
 
-    public Karte KartenVergleich(Karte[] karten)
+    public Karte KartenVergleich(Karte[] karten, Karte ersteKarte)
     {
+      Karte tempKarte = null;
 
-      return null;
+      for (int write = 0; write < karten.Length; write++)
+      {
+        for (int sort = 0; sort < karten.Length - 1; sort++)
+        {
+          if(karten[sort] != HoechsteKarte(karten[sort], karten[sort+1], ersteKarte))
+          {
+            tempKarte = karten[sort + 1];
+            karten[sort + 1] = karten[sort];
+            karten[sort] = tempKarte;
+          }
+
+          //if (arr[sort] > arr[sort + 1])
+          //{
+          //  temp = arr[sort + 1];
+          //  arr[sort + 1] = arr[sort];
+          //  arr[sort] = temp;
+          //}
+        }
+      }
+
+      return karten[0]; // hoechste Karte
     }
 
-    internal Karte HoechsteKarte(Karte[] karten, Karte ersteKarte) // 2 Karten
+    internal Karte HoechsteKarte(Karte karte1, Karte karte2, Karte ersteGespielteKarte) // 2 Karten
     {
-      if(karten.Where(karte => karte.SchlagWert == Schlag.Ober).Any()) // Ober
+      Karte[] karten = new Karte[] { karte1 , karte2 };
+      var ober = GetOber(karten);
+      var unter = GetUnter(karten);
+      var herzen = GetHerzen(karten);
+
+      if (ober.Length > 0) // Ober
       {
-        return HoechsteFarbe(karten);
+        if (ober.Length == 2)
+          return HoechsteFarbe(karten);
+        else // nur 1 Ober
+          return ober[0];
       }
-      else if(karten.Where(karte => karte.SchlagWert == Schlag.Unter).Any()) // Unter
+      else if(unter.Length> 0) // Unter
       {
-        return HoechsteFarbe(karten);
+        if (unter.Length == 2)
+          return HoechsteFarbe(karten);
+        else // nur 1 Unter
+          return unter[0];
       }
-      else if(karten.Where(karte => karte.FarbenWert == Farbe.Herz).Any()) // Herz
-      {
-        var herzen = karten.Where(karte => karte.FarbenWert == Farbe.Herz);
+      else if(herzen.Length > 0) // Herz
+      {       
         if (herzen.Count() == 2)
           return HoechstePunkte(karten);
         else // Herzen == 1
@@ -71,12 +102,37 @@ namespace Schafkopf_Wpf
       }
       else // Andere Farben
       {
-        if (karten[0].FarbenWert == karten[1].FarbenWert)
+        if (karten[0].FarbenWert == karten[1].FarbenWert) // Gleiche Farbe
+        {
           return HoechstePunkte(karten);
+        }
         else // Ungleiche Farbe
-          return karten.Where(karte => karte.FarbenWert == ersteKarte.FarbenWert).First();
+        {
+          var ersteKarteFarben = karten.Where(karte => karte.FarbenWert == ersteGespielteKarte.FarbenWert);
+
+          if(ersteKarteFarben.Count() == 1)
+            return ersteKarteFarben.First();
+
+          return karten[0];
+        }
+          
       }
       
+    }
+
+    private static Karte[] GetOber(Karte[] karten)
+    {
+      return karten.Where(karte => karte.SchlagWert == Schlag.Ober).ToArray();
+    }
+
+    private static Karte[] GetUnter(Karte[] karten)
+    {
+      return karten.Where(karte => karte.SchlagWert == Schlag.Unter).ToArray();
+    }
+
+    private static Karte[] GetHerzen(Karte[] karten)
+    {
+      return karten.Where(karte => karte.FarbenWert == Farbe.Herz).ToArray();
     }
 
     internal Karte HoechsteFarbe(Karte[] karten)

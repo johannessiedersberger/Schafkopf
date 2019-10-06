@@ -113,6 +113,26 @@ namespace Schafkopf_Test
       Assert.That(hoechsteKarte.Eigentuemer, Is.EqualTo(players[1]));
     }
 
+    [Test]
+    public void TestEichelOber()
+    {
+      // Given
+      List<Spieler> players = new List<Spieler>();
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.E7), new Karte(Kartenwerte.EO) }));
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.EA), new Karte(Kartenwerte.H7) }));
+      SchafkopfSpiel game = new SchafkopfSpiel(players);
+
+      Sauspiel saupspiel = new Sauspiel(game, players[0], players[1].Karten[0]);
+      var spielKarten = new Karte[] {
+        players[0].Karten[1],
+        players[1].Karten[1]
+      };
+      // When
+      var hoechsteKarte = saupspiel.KartenVergleich(spielKarten, players[0].Karten[1]);
+      Assert.That(hoechsteKarte.Kartenwert, Is.EqualTo(Kartenwerte.EO));
+      Assert.That(hoechsteKarte.Eigentuemer, Is.EqualTo(players[0]));
+    }
+
     #endregion
   }
 }

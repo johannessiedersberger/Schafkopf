@@ -74,7 +74,7 @@ namespace Schafkopf_Wpf
     {
       var cardString = card.ToString();
 
-      char[] cardList = { '7', '8', '9', '1', 'U', 'O', 'K', 'A' };
+      char[] cardList = { '7', '8', '9', 'U', 'O', 'K', '1', 'A' };
       Schlag[] schlaege = Enum.GetValues(typeof(Schlag)).Cast<Schlag>().ToArray();
 
       for (int c = 0; c < cardList.Length; c++)
