@@ -4,15 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Schafkopf
+namespace Schafkopf_Wpf
 {
-  public enum Color
-  {
-    Eichel,
-    Gras,
-    Herz,
-    Schellen
-  }
+  
   public static class Extensions
   {
     public static IList<T> Clone<T>(this IList<T> listToClone) where T : ICloneable
@@ -20,20 +14,19 @@ namespace Schafkopf
       return listToClone.Select(item => (T)item.Clone()).ToList();
     }
 
-    public static Color GetFarbe(this Karte card)
+    public static Farbe[] AlleFarben()
     {
-      var cardId = card.ToString();
+      return Enum.GetValues(typeof(Farbe)).Cast<Farbe>().ToArray();
+    }
 
-      if (cardId[0] == 'E')
-        return Color.Eichel;
-      if (cardId[0] == 'G')
-        return Color.Gras;
-      if (cardId[0] == 'H')
-        return Color.Herz;
-      if (cardId[0] == 'S')
-        return Color.Schellen;
+    public static Schlag[] AlleSchlaege()
+    {
+      return Enum.GetValues(typeof(Schlag)).Cast<Schlag>().ToArray().Reverse().ToArray();
+    }
 
-      throw new ArgumentException("Wrong Card");
+    public static bool IsAny<T>(this IEnumerable<T> data)
+    {
+      return data != null && data.Any();
     }
   }
 }

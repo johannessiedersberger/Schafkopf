@@ -4,24 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Schafkopf
+namespace Schafkopf_Wpf
 {
-  /// <summary>
-  /// Contains the cards for the Game
-  /// </summary>
-  public enum Karte
-  {
-    //7 8 9 10 U O K A
-    E7, E8, E9, E10, EU, EO, EK, EA, // Eichel
-    G7, G8, G9, G10, GU, GO, GK, GA, // Gras
-    H7, H8, H9, H10, HU, HO, HK, HA, // Herz
-    S7, S8, S9, S10, SU, SO, SK, SA, // Schellen
-  }
+ 
 
   /// <summary>
   /// The Game
   /// </summary>
-  public class SchafkopfSpiel
+  class SchafkopfSpiel
   {
     /// <summary>
     /// Contains the Players
@@ -48,40 +38,40 @@ namespace Schafkopf
     }
 
     #region CardDistribution
-    private static List<Karte> ErstelleAlleKarten()
+    private static List<Kartenwerte> ErstelleAlleKarten()
     {
-      return Enum.GetValues(typeof(Karte)).Cast<Karte>().ToList();
+      return Enum.GetValues(typeof(Kartenwerte)).Cast<Kartenwerte>().ToList();
     }
 
-    private static List<Spieler> ErstelleSpielerListe(List<Karte> karten)
+    private static List<Spieler> ErstelleSpielerListe(List<Kartenwerte> kartenWerte)
     {
       var spieler = new List<Spieler>();
       for (int i = 0; i < 4; i++)
       {
-        spieler.Add(new Spieler(VerteileKarten(karten)));
+        spieler.Add(new Spieler(VerteileKarten(kartenWerte)));
       }
       return spieler;
     }
 
-    private static List<Karte> VerteileKarten(List<Karte> cards)
+    private static List<Karte> VerteileKarten(List<Kartenwerte> kartenWerte)
     {
       List<Karte> kartenFuerSpieler = new List<Karte>();
       for (int i = 0; i < 8; i++)
       {
-        GibKarte(cards, kartenFuerSpieler);
+        GibKarte(kartenWerte, kartenFuerSpieler);
       }
       return kartenFuerSpieler.ToList();
     }
 
-    private static void GibKarte(List<Karte> cards, List<Karte> cardsForPlayer)
+    private static void GibKarte(List<Kartenwerte> kartenWerte, List<Karte> cardsForPlayer)
     {
-      int cardIndex = ZufaelligeKartenNummer(cards);
-      var cardToAdd = cards[cardIndex];
-      cards.Remove(cardToAdd);
-      cardsForPlayer.Add(cardToAdd);
+      int cardIndex = ZufaelligeKartenNummer(kartenWerte);
+      var kartenWert = kartenWerte[cardIndex];
+      kartenWerte.Remove(kartenWert);
+      cardsForPlayer.Add(new Karte(kartenWert));
     }
 
-    private static int ZufaelligeKartenNummer(List<Karte> cards)
+    private static int ZufaelligeKartenNummer(List<Kartenwerte> cards)
     {
       return new Random(System.DateTime.Now.Millisecond.GetHashCode()).Next(0, cards.Count() - 1);
     }

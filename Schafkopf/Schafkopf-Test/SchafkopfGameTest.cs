@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Schafkopf;
 using NUnit.Framework;
+using Schafkopf_Wpf;
 
 namespace Schafkopf_Test
 {
