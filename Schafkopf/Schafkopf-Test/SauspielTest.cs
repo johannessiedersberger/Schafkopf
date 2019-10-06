@@ -118,19 +118,95 @@ namespace Schafkopf_Test
     {
       // Given
       List<Spieler> players = new List<Spieler>();
-      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.E7), new Karte(Kartenwerte.EO) }));
-      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.EA), new Karte(Kartenwerte.H7) }));
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.EO) }));
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.H7) }));
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.E7) }));
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.EA) }));
       SchafkopfSpiel game = new SchafkopfSpiel(players);
 
-      Sauspiel saupspiel = new Sauspiel(game, players[0], players[1].Karten[0]);
+      Sauspiel saupspiel = new Sauspiel(game, players[0], players[3].Karten[0]);
       var spielKarten = new Karte[] {
-        players[0].Karten[1],
-        players[1].Karten[1]
+        players[0].Karten[0],
+        players[1].Karten[0],
+        players[2].Karten[0],
+        players[3].Karten[0]
       };
       // When
-      var hoechsteKarte = saupspiel.KartenVergleich(spielKarten, players[0].Karten[1]);
+      var hoechsteKarte = saupspiel.KartenVergleich(spielKarten, players[0].Karten[0]);
       Assert.That(hoechsteKarte.Kartenwert, Is.EqualTo(Kartenwerte.EO));
       Assert.That(hoechsteKarte.Eigentuemer, Is.EqualTo(players[0]));
+    }
+
+    [Test]
+    public void TestHerz()
+    {
+      // Given
+      List<Spieler> players = new List<Spieler>();
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.G7) }));
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.H7) }));
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.E7) }));
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.GA) }));
+      SchafkopfSpiel game = new SchafkopfSpiel(players);
+
+      Sauspiel saupspiel = new Sauspiel(game, players[0], players[3].Karten[0]);
+      var spielKarten = new Karte[] {
+        players[0].Karten[0],
+        players[1].Karten[0],
+        players[2].Karten[0],
+        players[3].Karten[0]
+      };
+      // When
+      var hoechsteKarte = saupspiel.KartenVergleich(spielKarten, players[0].Karten[0]);
+      Assert.That(hoechsteKarte.Kartenwert, Is.EqualTo(Kartenwerte.H7));
+      Assert.That(hoechsteKarte.Eigentuemer, Is.EqualTo(players[1]));
+    }
+
+    [Test]
+    public void TestOberFarbe()
+    {
+      // Given
+      List<Spieler> players = new List<Spieler>();
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.G7) }));
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.HO) }));
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.SO) }));
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.GA) }));
+      SchafkopfSpiel game = new SchafkopfSpiel(players);
+
+      Sauspiel saupspiel = new Sauspiel(game, players[0], players[3].Karten[0]);
+      var spielKarten = new Karte[] {
+        players[0].Karten[0],
+        players[1].Karten[0],
+        players[2].Karten[0],
+        players[3].Karten[0]
+      };
+      // When
+      var hoechsteKarte = saupspiel.KartenVergleich(spielKarten, players[0].Karten[0]);
+      Assert.That(hoechsteKarte.Kartenwert, Is.EqualTo(Kartenwerte.HO));
+      Assert.That(hoechsteKarte.Eigentuemer, Is.EqualTo(players[1]));
+    }
+
+    [Test]
+    public void TestErsteFarbeGespielt()
+    {
+      // Given
+      List<Spieler> players = new List<Spieler>();
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.G7) }));
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.S8) }));
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.S7) }));
+      players.Add(new Spieler(new List<Karte>() { new Karte(Kartenwerte.GA) }));
+      SchafkopfSpiel game = new SchafkopfSpiel(players);
+
+      Sauspiel saupspiel = new Sauspiel(game, players[0], players[3].Karten[0]);
+      var spielKarten = new Karte[] {
+        players[0].Karten[0],
+        players[1].Karten[0],
+        players[2].Karten[0],
+        players[3].Karten[0]
+      };
+      // When
+      var hoechsteKarte = saupspiel.KartenVergleich(spielKarten, players[1].Karten[0]);
+      Assert.That(hoechsteKarte.Kartenwert, Is.EqualTo(Kartenwerte.S8));
+      Assert.That(hoechsteKarte.Eigentuemer, Is.EqualTo(players[1]));
     }
 
     #endregion
