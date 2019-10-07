@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Schafkopf_Wpf
+namespace Schafkopf
 {
-  class Spieler
+  public class Spieler
   {
     public List<Karte[]> Stiche { get; }
     

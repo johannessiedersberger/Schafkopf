@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schafkopf-Wpf", "Schafkopf-Wpf\Schafkopf-Wpf.csproj", "{B38D0A28-C0D0-483C-BF3B-EE9D8AC9CF6D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schafkopf-Test", "Schafkopf-Test\Schafkopf-Test.csproj", "{DCA2AE60-4475-4D12-BC0A-97E5E3CC6DB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schafkopf", "Schafkopf\Schafkopf.csproj", "{292973B5-B22D-44DE-BB5A-707D0F893747}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B38D0A28-C0D0-483C-BF3B-EE9D8AC9CF6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B38D0A28-C0D0-483C-BF3B-EE9D8AC9CF6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B38D0A28-C0D0-483C-BF3B-EE9D8AC9CF6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B38D0A28-C0D0-483C-BF3B-EE9D8AC9CF6D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DCA2AE60-4475-4D12-BC0A-97E5E3CC6DB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DCA2AE60-4475-4D12-BC0A-97E5E3CC6DB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCA2AE60-4475-4D12-BC0A-97E5E3CC6DB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCA2AE60-4475-4D12-BC0A-97E5E3CC6DB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{292973B5-B22D-44DE-BB5A-707D0F893747}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{292973B5-B22D-44DE-BB5A-707D0F893747}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{292973B5-B22D-44DE-BB5A-707D0F893747}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{292973B5-B22D-44DE-BB5A-707D0F893747}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

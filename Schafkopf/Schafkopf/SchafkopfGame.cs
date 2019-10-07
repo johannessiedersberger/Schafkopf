@@ -4,14 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Schafkopf_Wpf
+namespace Schafkopf
 {
- 
-
   /// <summary>
   /// The Game
   /// </summary>
-  class SchafkopfSpiel
+  public class SchafkopfSpiel
   {
     /// <summary>
     /// Contains the Players

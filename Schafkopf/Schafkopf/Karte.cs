@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Schafkopf_Wpf
+namespace Schafkopf
 {
   /// <summary>
   /// Contains the cards for the Game
@@ -38,7 +38,7 @@ namespace Schafkopf_Wpf
     Ass
   }
 
-  class Karte
+  public class Karte
   {
     public Kartenwerte Kartenwert { get; }
 

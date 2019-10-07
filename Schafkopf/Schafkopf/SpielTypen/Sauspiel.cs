@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Schafkopf_Wpf
+namespace Schafkopf
 {
-  class Sauspiel
+  public class Sauspiel
   {
     public Spieler Spielmacher { get; private set; }
     public Spieler SpielerPartner { get; private set; }
@@ -59,13 +59,6 @@ namespace Schafkopf_Wpf
             karten[sort + 1] = karten[sort];
             karten[sort] = tempKarte;
           }
-
-          //if (arr[sort] > arr[sort + 1])
-          //{
-          //  temp = arr[sort + 1];
-          //  arr[sort + 1] = arr[sort];
-          //  arr[sort] = temp;
-          //}
         }
       }
 
