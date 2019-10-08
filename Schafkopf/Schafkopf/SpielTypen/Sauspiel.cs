@@ -13,8 +13,9 @@ namespace Schafkopf
     public SchafkopfSpiel Spiel { get; private set; }
     public Karte GesuchtesAss { get; private set; }
 
-    public Sauspiel(SchafkopfSpiel spiel, Spieler spielmacher, Karte ass)
+    public Sauspiel(SchafkopfSpiel spiel, Spieler spielmacher, Kartenwerte asswert)
     {
+      var ass = SucheKarte(spiel, asswert);
       if (ass.SchlagWert != Schlag.Ass)
         throw new ArgumentException("Die Karte muss ein Ass sein");
 
@@ -28,6 +29,17 @@ namespace Schafkopf
       Spielmacher = spielmacher;
       SpielerPartner = SucheSpielerPartner(spiel, ass);
       GesuchtesAss = ass;
+    }
+
+    private static Karte SucheKarte(SchafkopfSpiel spiel, Kartenwerte karte)
+    {
+      foreach(var spieler in spiel.SpielerListe)
+      {
+        var suchKarte = spieler.Karten.Where(k => k.Kartenwert == karte);
+        if (suchKarte.Count() != 0)
+          return suchKarte.First();
+      }
+      throw new Exception("Card not Found");
     }
 
     private static bool HatSpielerFarbe(Spieler spielmacher, Karte ass)
