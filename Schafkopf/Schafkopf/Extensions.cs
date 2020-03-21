@@ -14,21 +14,21 @@ namespace Schafkopf
       return listToClone.Select(item => (T)item.Clone()).ToList();
     }
 
-    public static Farbe[] AlleFarben()
+    public static Color[] AllColors()
     {
-      return Enum.GetValues(typeof(Farbe)).Cast<Farbe>().ToArray();
+      return Enum.GetValues(typeof(Color)).Cast<Color>().ToArray();
     }
 
-    public static Schlag[] AlleSchlaege()
+    public static Schlag[] AllSchlaege()
     {
       return Enum.GetValues(typeof(Schlag)).Cast<Schlag>().ToArray().Reverse().ToArray();
     }
 
-    public static Kartenwerte RandomKartenWert()
+    public static CardValues RandomCardValue()
     {
       Random random = new Random();
       int randomIndex = random.Next(0, 32);
-      return Enum.GetValues(typeof(Kartenwerte)).Cast<Kartenwerte>().ToArray()[randomIndex];
+      return Enum.GetValues(typeof(CardValues)).Cast<CardValues>().ToArray()[randomIndex];
     }
 
     public static bool IsAny<T>(this IEnumerable<T> data)

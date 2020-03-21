@@ -9,20 +9,20 @@ namespace Schafkopf
   /// <summary>
   /// The Game
   /// </summary>
-  public class SchafkopfSpiel
+  public class SchafkopfGame
   {
     /// <summary>
     /// Contains the Players
     /// </summary>
-    public List<Spieler> SpielerListe { get; private set; }
+    public List<Player> PlayerList { get; private set; }
 
     /// <summary>
     /// Creates the Players and distributes the cards
     /// </summary>
-    public SchafkopfSpiel()
+    public SchafkopfGame()
     {
-      var cards = ErstelleAlleKarten();
-      SpielerListe = ErstelleSpielerListe(cards);
+      var cards = CreateAllCards();
+      PlayerList = CreatePlayerList(cards);
     }
 
     /// <summary>
@@ -30,46 +30,46 @@ namespace Schafkopf
     /// for Test Purposes
     /// </summary>
     /// <param name="spieler"></param>
-    internal SchafkopfSpiel(List<Spieler> spieler)
+    internal SchafkopfGame(List<Player> spieler)
     {
-      SpielerListe = spieler;
+      PlayerList = spieler;
     }
 
     #region CardDistribution
-    private static List<Kartenwerte> ErstelleAlleKarten()
+    private static List<CardValues> CreateAllCards()
     {
-      return Enum.GetValues(typeof(Kartenwerte)).Cast<Kartenwerte>().ToList();
+      return Enum.GetValues(typeof(CardValues)).Cast<CardValues>().ToList();
     }
 
-    private static List<Spieler> ErstelleSpielerListe(List<Kartenwerte> kartenWerte)
+    private static List<Player> CreatePlayerList(List<CardValues> cardValues)
     {
-      var spieler = new List<Spieler>();
+      var player = new List<Player>();
       for (int i = 0; i < 4; i++)
       {
-        spieler.Add(new Spieler(VerteileKarten(kartenWerte)));
+        player.Add(new Player(DistributeCards(cardValues)));
       }
-      return spieler;
+      return player;
     }
 
-    private static List<Karte> VerteileKarten(List<Kartenwerte> kartenWerte)
+    private static List<Card> DistributeCards(List<CardValues> cardValues)
     {
-      List<Karte> kartenFuerSpieler = new List<Karte>();
+      List<Card> cardsForPlayers = new List<Card>();
       for (int i = 0; i < 8; i++)
       {
-        GibKarte(kartenWerte, kartenFuerSpieler);
+        GiveCard(cardValues, cardsForPlayers);
       }
-      return kartenFuerSpieler.ToList();
+      return cardsForPlayers.ToList();
     }
 
-    private static void GibKarte(List<Kartenwerte> kartenWerte, List<Karte> cardsForPlayer)
+    private static void GiveCard(List<CardValues> cardValues, List<Card> cardsForPlayer)
     {
-      int cardIndex = ZufaelligeKartenNummer(kartenWerte);
-      var kartenWert = kartenWerte[cardIndex];
-      kartenWerte.Remove(kartenWert);
-      cardsForPlayer.Add(new Karte(kartenWert));
+      int cardIndex = RandomCardNUmber(cardValues);
+      var cardValue = cardValues[cardIndex];
+      cardValues.Remove(cardValue);
+      cardsForPlayer.Add(new Card(cardValue));
     }
 
-    private static int ZufaelligeKartenNummer(List<Kartenwerte> cards)
+    private static int RandomCardNUmber(List<CardValues> cards)
     {
       return new Random(System.DateTime.Now.Millisecond.GetHashCode()).Next(0, cards.Count() - 1);
     }

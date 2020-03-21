@@ -14,28 +14,28 @@ namespace Schafkopf_Test
     public void TestNumberOfPlayers()
     {
       //Given // When
-      var game = new SchafkopfSpiel();
+      var game = new SchafkopfGame();
       //Then
-      Assert.That(game.SpielerListe.Count, Is.EqualTo(4));     
+      Assert.That(game.PlayerList.Count, Is.EqualTo(4));     
     }
 
     [Test]
     public void TestNumberOfCards()
     {
       //Given
-      var game = new SchafkopfSpiel();
+      var game = new SchafkopfGame();
       //Then
-      foreach(var player in game.SpielerListe)
-        Assert.That(player.Karten.Count(), Is.EqualTo(8));      
+      foreach(var player in game.PlayerList)
+        Assert.That(player.Cards.Count(), Is.EqualTo(8));      
     }
 
     [Test]
     public void CheckIfCardDuplicated()
     {
       // Given
-      var game = new SchafkopfSpiel();
+      var game = new SchafkopfGame();
       // When
-      var allCards = game.SpielerListe.SelectMany(d => d.Karten).ToList();
+      var allCards = game.PlayerList.SelectMany(d => d.Cards).ToList();
       // Then
       foreach(var card in allCards)
       {

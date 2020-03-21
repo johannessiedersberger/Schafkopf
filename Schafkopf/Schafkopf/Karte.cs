@@ -9,7 +9,7 @@ namespace Schafkopf
   /// <summary>
   /// Contains the cards for the Game
   /// </summary>
-  public enum Kartenwerte
+  public enum CardValues
   {
     //7 8 9 10 U O K A
     E7, E8, E9, E10, EU, EO, EK, EA, // Eichel
@@ -18,7 +18,7 @@ namespace Schafkopf
     S7, S8, S9, S10, SU, SO, SK, SA, // Schellen
   }
 
-  public enum Farbe
+  public enum Color
   {
     Eichel,
     Gras,
@@ -38,39 +38,39 @@ namespace Schafkopf
     Ass
   }
 
-  public class Karte
+  public class Card
   {
-    public Kartenwerte Kartenwert { get; }
+    public CardValues CardValue { get; }
 
-    public Farbe FarbenWert => Farben(Kartenwert);
+    public Color ColorValue => Farben(CardValue);
 
-    public Schlag SchlagWert => Schlag(Kartenwert);
+    public Schlag SchlagValue => Schlag(CardValue);
 
-    public Spieler Eigentuemer { get; set; }
+    public Player Owner { get; set; }
 
-    public Karte(Kartenwerte kartenwert)
+    public Card(CardValues kartenwert)
     {
-      Kartenwert = kartenwert;
+      CardValue = kartenwert;
     }
 
-    public Farbe Farben(Kartenwerte card)
+    public Color Farben(CardValues card)
     {
       var cardId = card.ToString();
 
       if (cardId[0] == 'E')
-        return Farbe.Eichel;
+        return Color.Eichel;
       if (cardId[0] == 'G')
-        return Farbe.Gras;
+        return Color.Gras;
       if (cardId[0] == 'H')
-        return Farbe.Herz;
+        return Color.Herz;
       if (cardId[0] == 'S')
-        return Farbe.Schellen;
+        return Color.Schellen;
 
       throw new ArgumentException("Wrong Card");
     }
 
    
-    public static Schlag Schlag(Kartenwerte card)
+    public static Schlag Schlag(CardValues card)
     {
       var cardString = card.ToString();
 

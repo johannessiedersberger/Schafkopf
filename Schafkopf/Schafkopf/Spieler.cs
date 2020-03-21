@@ -6,25 +6,23 @@ using System.Threading.Tasks;
 
 namespace Schafkopf
 {
-  public class Spieler
+  public class Player
   {
-    public List<Karte[]> Stiche { get; }
+    public List<Card[]> Stiche { get; }
     
-
-    public List<Karte> Karten { get; }
+    public List<Card> Cards { get; }
    
-
-    public Spieler(List<Karte> karten)
+    public Player(List<Card> karten)
     {
-      Karten = karten;
-      SetzeEigentuemer(karten, this);
+      Cards = karten;
+      SetOwner(karten, this);
     }
 
-    private static void SetzeEigentuemer(List<Karte> karten, Spieler spieler)
+    private static void SetOwner(List<Card> karten, Player spieler)
     {
       foreach(var karte in karten)
       {
-        karte.Eigentuemer = spieler;
+        karte.Owner = spieler;
       }
     }
   }

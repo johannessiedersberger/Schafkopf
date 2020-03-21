@@ -8,175 +8,172 @@ namespace Schafkopf
 {
   public class Sauspiel
   {
-    public Spieler Spielmacher { get; private set; }
-    public Spieler SpielerPartner { get; private set; }
-    public SchafkopfSpiel Spiel { get; private set; }
-    public Karte GesuchtesAss { get; private set; }
+    public Player ChiefPlayer { get; private set; }
+    public Player ChiefPlayerPartner { get; private set; }
+    public SchafkopfGame Game { get; private set; }
+    public Card SearchedAss { get; private set; }
 
-    public Sauspiel(SchafkopfSpiel spiel, Spieler spielmacher, Kartenwerte asswert)
+    public Sauspiel(SchafkopfGame game, Player chiefPlayer, CardValues assValue)
     {
-      var ass = SucheKarte(spiel, asswert);
-      if (ass.SchlagWert != Schlag.Ass)
+      var ass = SearchCard(game, assValue);
+      if (ass.SchlagValue != Schlag.Ass)
         throw new ArgumentException("Die Karte muss ein Ass sein");
 
-      if (HatSpielerFarbe(spielmacher, ass) == false)
+      if (HasPlayerColor(chiefPlayer, ass) == false)
         throw new InvalidOperationException("Der Spieler muss die Farbe haben, nach der er sucht");
 
-      if (spielmacher == SucheSpielerPartner(spiel, ass))
+      if (chiefPlayer == SearchGamePartner(game, ass))
         throw new InvalidOperationException("Der Spieler hat das Ass selber, auf das er spielen will");
       
-      Spiel = spiel;
-      Spielmacher = spielmacher;
-      SpielerPartner = SucheSpielerPartner(spiel, ass);
-      GesuchtesAss = ass;
+      Game = game;
+      ChiefPlayer = chiefPlayer;
+      ChiefPlayerPartner = SearchGamePartner(game, ass);
+      SearchedAss = ass;
     }
 
-    private static Karte SucheKarte(SchafkopfSpiel spiel, Kartenwerte karte)
+    private static Card SearchCard(SchafkopfGame game, CardValues cardValue)
     {
-      foreach(var spieler in spiel.SpielerListe)
+      foreach(var player in game.PlayerList)
       {
-        var suchKarte = spieler.Karten.Where(k => k.Kartenwert == karte);
-        if (suchKarte.Count() != 0)
-          return suchKarte.First();
+        var searchCard = player.Cards.Where(k => k.CardValue == cardValue);
+        if (searchCard.Count() != 0)
+          return searchCard.First();
       }
-      throw new Exception("Card not Found");
+      throw new InvalidOperationException("Card not Found");
     }
 
-    private static bool HatSpielerFarbe(Spieler spielmacher, Karte ass)
+    private static bool HasPlayerColor(Player spielmacher, Card ass)
     {
-      return spielmacher.Karten.Where(c => c.FarbenWert == ass.FarbenWert).Count() > 0;
+      return spielmacher.Cards.Where(c => c.ColorValue == ass.ColorValue).Count() > 0;
     }
 
-    private static Spieler SucheSpielerPartner(SchafkopfSpiel game, Karte ass)
+    private static Player SearchGamePartner(SchafkopfGame game, Card ass)
     {
-      var result = game.SpielerListe.Where(player => player.Karten.Contains(ass));
+      var result = game.PlayerList.Where(player => player.Cards.Contains(ass));
 
       if (result.Count() != 0)
         return result.ToList().First();
       else
         throw new InvalidOperationException("No Partner Found");
     }
+ 
 
-    public Karte KartenVergleich(Karte[] karten, Karte ersteKarte)
+    public static Card CardComparison(Card[] cards, Card firstCard)
     {
-      Karte tempKarte = null;
+      Card tempKarte = null;
 
-      for (int write = 0; write < karten.Length; write++)
+      for (int write = 0; write < cards.Length; write++)
       {
-        for (int sort = 0; sort < karten.Length - 1; sort++)
+        for (int sort = 0; sort < cards.Length - 1; sort++)
         {
-          if(karten[sort] != HoechsteKarte(karten[sort], karten[sort+1], ersteKarte))
+          if(cards[sort] != HighestCard(cards[sort], cards[sort+1], firstCard))
           {
-            tempKarte = karten[sort + 1];
-            karten[sort + 1] = karten[sort];
-            karten[sort] = tempKarte;
+            tempKarte = cards[sort + 1];
+            cards[sort + 1] = cards[sort];
+            cards[sort] = tempKarte;
           }
         }
       }
 
-      return karten[0]; // hoechste Karte
+      return cards[0]; // highest Karte
     }
 
-    internal Karte HoechsteKarte(Karte karte1, Karte karte2, Karte ersteGespielteKarte) // 2 Karten
+    internal static Card HighestCard(Card card1, Card card2, Card firstCardPlayed) // 2 Karten
     {
-      Karte[] karten = new Karte[] { karte1 , karte2 };
-      var ober = GetOber(karten);
-      var unter = GetUnter(karten);
-      var herzen = GetHerzen(karten);
+      Card[] cards = new Card[] { card1 , card2 };
+      var ober = GetOber(cards);
+      var unter = GetUnter(cards);
+      var herzen = GetHerzen(cards);
 
       if (ober.Length > 0) // Ober
       {
         if (ober.Length == 2)
-          return HoechsteFarbe(karten);
+          return HighestColor(cards);
         else // nur 1 Ober
           return ober[0];
       }
-      else if(unter.Length> 0) // Unter
+      else if(unter.Length > 0) // Unter
       {
         if (unter.Length == 2)
-          return HoechsteFarbe(karten);
+          return HighestColor(cards);
         else // nur 1 Unter
           return unter[0];
       }
       else if(herzen.Length > 0) // Herz
       {       
         if (herzen.Count() == 2)
-          return HoechstePunkte(karten);
+          return HighestPoints(cards);
         else // Herzen == 1
           return herzen.First();
       }
       else // Andere Farben
       {
-        if (karten[0].FarbenWert == karten[1].FarbenWert) // Gleiche Farbe
+        if (cards[0].ColorValue == cards[1].ColorValue) // Gleiche Farbe
         {
-          return HoechstePunkte(karten);
+          return HighestPoints(cards);
         }
         else // Ungleiche Farbe
         {
-          var ersteKarteFarben = karten.Where(karte => karte.FarbenWert == ersteGespielteKarte.FarbenWert);
+          var ersteKarteFarben = cards.Where(karte => karte.ColorValue == firstCardPlayed.ColorValue);
 
           if(ersteKarteFarben.Count() == 1)
             return ersteKarteFarben.First();
 
-          return karten[0];
-        }
-          
-      }
-      
+          return cards[0];
+        }         
+      }     
     }
 
-    private static Karte[] GetOber(Karte[] karten)
+    private static Card[] GetOber(Card[] cards)
     {
-      return karten.Where(karte => karte.SchlagWert == Schlag.Ober).ToArray();
+      return cards.Where(karte => karte.SchlagValue == Schlag.Ober).ToArray();
     }
 
-    private static Karte[] GetUnter(Karte[] karten)
+    private static Card[] GetUnter(Card[] cards)
     {
-      return karten.Where(karte => karte.SchlagWert == Schlag.Unter).ToArray();
+      return cards.Where(karte => karte.SchlagValue == Schlag.Unter).ToArray();
     }
 
-    private static Karte[] GetHerzen(Karte[] karten)
+    private static Card[] GetHerzen(Card[] cards)
     {
-      return karten.Where(karte => karte.FarbenWert == Farbe.Herz).ToArray();
+      return cards.Where(karte => karte.ColorValue == Color.Herz).ToArray();
     }
 
-    internal Karte HoechsteFarbe(Karte[] karten)
+    internal static Card HighestColor(Card[] cards)
     {
-      if (karten.Length != 2)
+      if (cards.Length != 2)
         throw new ArgumentException("only 2 cards accepted");
 
-      if (karten[0].FarbenWert == karten[1].FarbenWert)
+      if (cards[0].ColorValue == cards[1].ColorValue)
         throw new ArgumentException("Gleiche Farben");
 
-      Farbe[] farben = Extensions.AlleFarben();
-      foreach(Farbe f in farben)
+      Color[] colors = Extensions.AllColors();
+      foreach(Color f in colors)
       {
-        var result = karten.Where(karte => karte.FarbenWert == f);
+        var result = cards.Where(card => card.ColorValue == f);
         if (result.Count() != 0)
           return result.First();
       }
       throw new InvalidOperationException("HoechsteFarbe not Found");
     }
 
-    internal Karte HoechstePunkte(Karte[] karten)
+    internal static Card HighestPoints(Card[] karten)
     {
-      if (karten[0].SchlagWert == karten[1].SchlagWert)
+      if (karten[0].SchlagValue == karten[1].SchlagValue)
         throw new ArgumentException("Gleiche Farben");
 
       if (karten.Length != 2)
         throw new ArgumentException("only 2 cards accepted");
 
-      Schlag[] schlaege = Extensions.AlleSchlaege();
+      Schlag[] schlaege = Extensions.AllSchlaege();
 
       foreach (Schlag schlag in schlaege)
       {
-        var result = karten.Where(karte => karte.SchlagWert == schlag);
+        var result = karten.Where(karte => karte.SchlagValue == schlag);
         if (result.Count() != 0)
           return result.First();
       }
       throw new InvalidOperationException("Hoechste Punkte not Found");
     }
-
-    
   }
 }
