@@ -484,6 +484,13 @@ MonoBehaviour:
   - {fileID: 21300054, guid: f836428a79d051b44800cc97d56f3773, type: 3}
   - {fileID: 21300052, guid: f836428a79d051b44800cc97d56f3773, type: 3}
   - {fileID: 21300048, guid: f836428a79d051b44800cc97d56f3773, type: 3}
+  CardPrefab: {fileID: 711675045622362352, guid: 13335d30b2ee6a04eba2d9a5bdf7d454,
+    type: 3}
+  PlayerStackPositions:
+  - {fileID: 1894701638}
+  - {fileID: 1379149329}
+  - {fileID: 1379912149}
+  - {fileID: 394950092}
 --- !u!4 &1347337936
 Transform:
   m_ObjectHideFlags: 0
@@ -522,7 +529,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1379149329}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7, y: 0, z: 0}
+  m_LocalPosition: {x: 5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1167653335}
