@@ -18,7 +18,7 @@ public class SchafkopfController : MonoBehaviour
   {
     SchafkopfGame game = new SchafkopfGame();
     SetCardValueToSprite(CardFaces, ValueToSprite);
-    DistributeCards(game, CardPrefab, PlayerStackPositions, ValueToSprite, CardLists); 
+    DistributeCards(game, CardPrefab, PlayerStackPositions, ValueToSprite, CardLists);
   }
 
   private static void SetCardValueToSprite(Sprite[] cardFaces, Dictionary<CardValues, Sprite> dictionary)
@@ -26,9 +26,9 @@ public class SchafkopfController : MonoBehaviour
     var cardValues = Enum.GetValues(typeof(CardValues)).Cast<CardValues>().ToArray();
     for (int i = 0; i < cardFaces.Length; i++)
       dictionary.Add(cardValues[i], cardFaces[i]);
-  } 
+  }
 
-  private static void DistributeCards(SchafkopfGame game, GameObject CardPrefab, GameObject[] fieldPositions, Dictionary<CardValues, Sprite> ValueToSprite, List<List<GameObject>> CardLists)
+  private void DistributeCards(SchafkopfGame game, GameObject CardPrefab, GameObject[] fieldPositions, Dictionary<CardValues, Sprite> ValueToSprite, List<List<GameObject>> CardLists)
   {
     for (int i = 0; i < game.PlayerList.Count(); i++)
     {
@@ -37,7 +37,7 @@ public class SchafkopfController : MonoBehaviour
     }
   }
 
-  private static List<GameObject> CreatePlayerStack(
+  private List<GameObject> CreatePlayerStack(
     Transform fieldPos, GameObject CardPrefab,
     Player player,
     Dictionary<CardValues, Sprite> valueToSprite)
@@ -47,7 +47,7 @@ public class SchafkopfController : MonoBehaviour
     float zOffset = 0;
 
     for (int j = 0; j < player.Cards.Count(); j++)
-    {     
+    {
       CardPrefab.GetComponent<SpriteRenderer>().sprite = valueToSprite[player.Cards[j].CardValue];
       GameObject newCard = GameObject.Instantiate(
         CardPrefab,
@@ -58,7 +58,7 @@ public class SchafkopfController : MonoBehaviour
 
       newCard.GetComponent<UnityCard>().Owner = player;
       newCard.GetComponent<UnityCard>().CardValue = player.Cards[j].CardValue;
-
+      newCard.GetComponent<UnityCard>().SchafKopfController = this;
       cardList.Add(newCard);
 
       xOffset = xOffset + 0.5f;
@@ -67,11 +67,29 @@ public class SchafkopfController : MonoBehaviour
     return cardList;
   }
 
-  
-
-
-
-  
+  public void SelectCard(GameObject card)
+  {
+    var currentCard = card.GetComponent<UnityCard>();
+    if (currentCard.IsSelected)
+    {
+      currentCard.ChangeColor(false);
+      currentCard.IsSelected = false;
+    }
+    else
+    {
+      currentCard.ChangeColor(true);
+      currentCard.IsSelected = true;
+    }
+    foreach(var list in CardLists)
+    {
+      var cardsToDeselect = list.Where(c => c != card).Select(ca => ca.GetComponent<UnityCard>());
+      foreach(var c in cardsToDeselect)
+      {
+        c.IsSelected = false;
+        c.ChangeColor(false);
+      }
+    }
+  }
 
   // Update is called once per frame
   void Update()
