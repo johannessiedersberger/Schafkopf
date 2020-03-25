@@ -9,8 +9,10 @@ public class SchafkopfController : MonoBehaviour
 {
   public Sprite[] CardFaces;
   public GameObject CardPrefab;
-  public GameObject[] PlayerStackPositions;
+  public Transform[] PlayerStackPositions;
+  public Transform Table;
   public List<List<GameObject>> CardLists = new List<List<GameObject>>();
+  public List<GameObject> CardTable = new List<GameObject>();
   public Dictionary<CardValues, Sprite> ValueToSprite = new Dictionary<CardValues, Sprite>();
 
   // Start is called before the first frame update
@@ -29,11 +31,11 @@ public class SchafkopfController : MonoBehaviour
       dictionary.Add(cardValues[i], cardFaces[i]);
   }
 
-  private void DistributeCards(SchafkopfGame game, GameObject CardPrefab, GameObject[] fieldPositions, Dictionary<CardValues, Sprite> ValueToSprite, List<List<GameObject>> CardLists)
+  private void DistributeCards(SchafkopfGame game, GameObject CardPrefab, Transform[] fieldPositions, Dictionary<CardValues, Sprite> ValueToSprite, List<List<GameObject>> CardLists)
   {
     for (int i = 0; i < game.PlayerList.Count(); i++)
     {
-      StartCoroutine(CreatePlayerStack(game.PlayerList[i], fieldPositions[i].transform));
+      StartCoroutine(CreatePlayerStack(game.PlayerList[i], fieldPositions[i]));
     }
   }
 
