@@ -46,23 +46,29 @@ public class SchafkopfController : MonoBehaviour
     for (int j = 0; j < player.Cards.Count(); j++)
     {
       yield return new WaitForSeconds(0.05f);
-      CardPrefab.GetComponent<SpriteRenderer>().sprite = ValueToSprite[player.Cards[j].CardValue];
-      GameObject newCard = GameObject.Instantiate(
-        CardPrefab,
-        new Vector3(fieldPos.position.x + xOffset, fieldPos.position.y, fieldPos.position.z - zOffset),
-        Quaternion.identity,
-        fieldPos
-        );
 
-      newCard.GetComponent<UnityCard>().Owner = player;
-      newCard.GetComponent<UnityCard>().CardValue = player.Cards[j].CardValue;
-      newCard.GetComponent<UnityCard>().SchafKopfController = this;
+      CardPrefab.GetComponent<SpriteRenderer>().sprite = ValueToSprite[player.Cards[j].CardValue];
+      GameObject newCard = InstantiateCard(player, player.Cards[j].CardValue,CardPrefab, fieldPos, xOffset, zOffset);     
       cardList.Add(newCard);
 
       xOffset = xOffset + 0.5f;
       zOffset = zOffset + 0.03f;
     }
     CardLists.Add(cardList);
+  }
+
+  private GameObject InstantiateCard(Player player, CardValues cardvalue, GameObject CardPrefab, Transform fieldPos, float xOffset, float zOffset)
+  {
+    var card = GameObject.Instantiate(
+        CardPrefab,
+        new Vector3(fieldPos.position.x + xOffset, fieldPos.position.y, fieldPos.position.z - zOffset),
+        Quaternion.identity,
+        fieldPos
+        );
+    card.GetComponent<UnityCard>().Owner = player;
+    card.GetComponent<UnityCard>().CardValue = cardvalue;
+    card.GetComponent<UnityCard>().SchafKopfController = this;
+    return card;
   }
 
   public void SelectCard(GameObject card)
