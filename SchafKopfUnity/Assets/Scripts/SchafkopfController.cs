@@ -19,6 +19,7 @@ public class SchafkopfController : MonoBehaviour
     SchafkopfGame game = new SchafkopfGame();
     SetCardValueToSprite(CardFaces, ValueToSprite);
     DistributeCards(game, CardPrefab, PlayerStackPositions, ValueToSprite, CardLists);
+    
   }
 
   private static void SetCardValueToSprite(Sprite[] cardFaces, Dictionary<CardValues, Sprite> dictionary)
@@ -32,15 +33,11 @@ public class SchafkopfController : MonoBehaviour
   {
     for (int i = 0; i < game.PlayerList.Count(); i++)
     {
-      var cardList = CreatePlayerStack(fieldPositions[i].transform, CardPrefab, game.PlayerList[i], ValueToSprite);
-      CardLists.Add(cardList);
+      StartCoroutine(CreatePlayerStack(game.PlayerList[i], fieldPositions[i].transform));
     }
   }
 
-  private List<GameObject> CreatePlayerStack(
-    Transform fieldPos, GameObject CardPrefab,
-    Player player,
-    Dictionary<CardValues, Sprite> valueToSprite)
+  private IEnumerator<WaitForSeconds> CreatePlayerStack(Player player, Transform fieldPos)
   {
     List<GameObject> cardList = new List<GameObject>();
     float xOffset = 0;
@@ -48,7 +45,8 @@ public class SchafkopfController : MonoBehaviour
 
     for (int j = 0; j < player.Cards.Count(); j++)
     {
-      CardPrefab.GetComponent<SpriteRenderer>().sprite = valueToSprite[player.Cards[j].CardValue];
+      yield return new WaitForSeconds(0.05f);
+      CardPrefab.GetComponent<SpriteRenderer>().sprite = ValueToSprite[player.Cards[j].CardValue];
       GameObject newCard = GameObject.Instantiate(
         CardPrefab,
         new Vector3(fieldPos.position.x + xOffset, fieldPos.position.y, fieldPos.position.z - zOffset),
@@ -64,7 +62,7 @@ public class SchafkopfController : MonoBehaviour
       xOffset = xOffset + 0.5f;
       zOffset = zOffset + 0.03f;
     }
-    return cardList;
+    CardLists.Add(cardList);
   }
 
   public void SelectCard(GameObject card)
