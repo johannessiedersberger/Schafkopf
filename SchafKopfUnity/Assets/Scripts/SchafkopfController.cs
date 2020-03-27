@@ -10,7 +10,7 @@ public class SchafkopfController : MonoBehaviour
   public Sprite[] CardFaces;
   public GameObject CardPrefab;
   public Transform[] PlayerStackPositions;
-  public Transform Table;
+  public GameObject Table;
   public List<List<GameObject>> CardLists = new List<List<GameObject>>();
   public List<GameObject> CardTable = new List<GameObject>();
   public Dictionary<CardValues, Sprite> ValueToSprite = new Dictionary<CardValues, Sprite>();
@@ -19,9 +19,9 @@ public class SchafkopfController : MonoBehaviour
   void Start()
   {
     SchafkopfGame game = new SchafkopfGame();
+    Table.GetComponent<Table>().SchafkopfController = this;
     SetCardValueToSprite(CardFaces, ValueToSprite);
-    DistributeCards(game, CardPrefab, PlayerStackPositions, ValueToSprite, CardLists);
-    
+    DistributeCards(game, CardPrefab, PlayerStackPositions, ValueToSprite, CardLists);   
   }
 
   private static void SetCardValueToSprite(Sprite[] cardFaces, Dictionary<CardValues, Sprite> dictionary)
@@ -94,6 +94,35 @@ public class SchafkopfController : MonoBehaviour
         c.IsSelected = false;
         c.ChangeColor(false);
       }
+    }
+  }
+
+  public GameObject GetSelectedCard()
+  {
+    foreach(var list in CardLists)
+    {
+      var selectedCards = list.Where(card => card.GetComponent<UnityCard>().IsSelected);
+      if (selectedCards.Count() > 0)
+        return selectedCards.First();
+    }
+    throw new Exception("No Card Found");
+  }
+
+  public void PutCardOnTable(GameObject card)
+  {
+    
+
+    card.transform.position = Vector2.Lerp(transform.position, Table.transform.position, Time.deltaTime * 0.01f);
+
+    RemoveCardFromPlayer(card);
+    CardTable.Add(card);
+  }
+
+  private void RemoveCardFromPlayer(GameObject card)
+  {
+    foreach (var cardList in CardLists)
+    {
+      cardList.Remove(card);
     }
   }
 
