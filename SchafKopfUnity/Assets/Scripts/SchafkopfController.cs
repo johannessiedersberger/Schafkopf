@@ -12,7 +12,6 @@ public class SchafkopfController : MonoBehaviour
   public Transform[] PlayerStackPositions;
   public GameObject Table;
   public List<List<GameObject>> CardLists = new List<List<GameObject>>();
-  public List<GameObject> CardTable = new List<GameObject>();
   public Dictionary<CardValues, Sprite> ValueToSprite = new Dictionary<CardValues, Sprite>();
 
   // Start is called before the first frame update
@@ -21,7 +20,8 @@ public class SchafkopfController : MonoBehaviour
     SchafkopfGame game = new SchafkopfGame();
     Table.GetComponent<Table>().SchafkopfController = this;
     SetCardValueToSprite(CardFaces, ValueToSprite);
-    DistributeCards(game, CardPrefab, PlayerStackPositions, ValueToSprite, CardLists);   
+    CardLists.Add(new List<GameObject>()); //Tabe list
+    DistributeCards(game, CardPrefab, PlayerStackPositions, ValueToSprite, CardLists);  
   }
 
   private static void SetCardValueToSprite(Sprite[] cardFaces, Dictionary<CardValues, Sprite> dictionary)
@@ -86,10 +86,27 @@ public class SchafkopfController : MonoBehaviour
       currentCard.ChangeColor(true);
       currentCard.IsSelected = true;
     }
-    foreach(var list in CardLists)
+    DeselectCardExcept(card);
+  }
+
+  public void DeselectAllCards()
+  {
+    foreach (var list in CardLists)
+    {
+      foreach (var card in list)
+      {
+        card.GetComponent<UnityCard>().IsSelected = false;
+        card.GetComponent<UnityCard>().ChangeColor(false);
+      }
+    }
+  }
+
+  public void DeselectCardExcept(GameObject card)
+  {
+    foreach (var list in CardLists)
     {
       var cardsToDeselect = list.Where(c => c != card).Select(ca => ca.GetComponent<UnityCard>());
-      foreach(var c in cardsToDeselect)
+      foreach (var c in cardsToDeselect)
       {
         c.IsSelected = false;
         c.ChangeColor(false);
@@ -110,15 +127,20 @@ public class SchafkopfController : MonoBehaviour
 
   public void PutCardOnTable(GameObject card)
   {
-    
+    if (CardLists.First().Contains(card)) // Card is already on the table
+      return;
 
-    card.transform.position = Vector2.Lerp(transform.position, Table.transform.position, Time.deltaTime * 0.01f);
+    var newPos = Table.transform.position;
+    newPos.z = card.transform.position.z - CardLists.First().Count()*0.1f;
+    newPos.x += CardLists.First().Count()*0.4f;
 
-    RemoveCardFromPlayer(card);
-    CardTable.Add(card);
+    card.transform.position = newPos;
+
+    RemoveCard(card);
+    CardLists.First().Add(card);
   }
 
-  private void RemoveCardFromPlayer(GameObject card)
+  private void RemoveCard(GameObject card)
   {
     foreach (var cardList in CardLists)
     {

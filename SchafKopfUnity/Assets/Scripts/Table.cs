@@ -10,6 +10,7 @@ public class Table : MonoBehaviour
   void OnMouseDown()
   {
     SchafkopfController.PutCardOnTable(SchafkopfController.GetSelectedCard());
+    SchafkopfController.DeselectAllCards();
   }
 
   public void AddCard(GameObject card)
