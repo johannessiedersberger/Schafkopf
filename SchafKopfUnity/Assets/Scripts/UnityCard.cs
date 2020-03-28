@@ -13,6 +13,24 @@ public class UnityCard : MonoBehaviour
 
   public CardValues CardValue { get; set; }
 
+  public bool IsSelectable
+  {
+    get => _isSelectable;
+    set
+    {
+      _isSelectable = value;
+      if (value)
+      {
+        gameObject.GetComponent<BoxCollider2D>().enabled = true;
+      }
+      else
+      {
+        gameObject.GetComponent<BoxCollider2D>().enabled = false;
+      }
+    }
+  }
+  private bool _isSelectable;
+
   void OnMouseDown()
   {
     SchafKopfController.SelectCard(this.gameObject);    

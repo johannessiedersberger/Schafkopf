@@ -138,6 +138,7 @@ public class SchafkopfController : MonoBehaviour
 
     RemoveCard(card);
     CardLists.First().Add(card);
+    card.GetComponent<UnityCard>().IsSelectable = false;
   }
 
   private void RemoveCard(GameObject card)
