@@ -9,7 +9,7 @@ public class SchafkopfController : MonoBehaviour
 {
   public Sprite[] CardFaces;
   public GameObject CardPrefab;
-  public Transform[] PlayerStackPositions;
+  public GameObject[] PlayerStackPositions;
   public GameObject Table;
   public List<List<GameObject>> CardLists = new List<List<GameObject>>();
   public Dictionary<CardValues, Sprite> ValueToSprite = new Dictionary<CardValues, Sprite>();
@@ -21,9 +21,11 @@ public class SchafkopfController : MonoBehaviour
     Table.GetComponent<Table>().SchafkopfController = this;
     SetCardValueToSprite(CardFaces, ValueToSprite);
     CardLists.Add(new List<GameObject>()); //Tabe list
-    DistributeCards(game, CardPrefab, PlayerStackPositions, ValueToSprite, CardLists);  
+    DistributeCards(game, CardPrefab, PlayerStackPositions, ValueToSprite, CardLists);
+    MakeTurn(PlayerStackPositions[0]);
   }
 
+  #region gamestart
   private static void SetCardValueToSprite(Sprite[] cardFaces, Dictionary<CardValues, Sprite> dictionary)
   {
     var cardValues = Enum.GetValues(typeof(CardValues)).Cast<CardValues>().ToArray();
@@ -31,11 +33,11 @@ public class SchafkopfController : MonoBehaviour
       dictionary.Add(cardValues[i], cardFaces[i]);
   }
 
-  private void DistributeCards(SchafkopfGame game, GameObject CardPrefab, Transform[] fieldPositions, Dictionary<CardValues, Sprite> ValueToSprite, List<List<GameObject>> CardLists)
+  private void DistributeCards(SchafkopfGame game, GameObject CardPrefab, GameObject[] playerPositions, Dictionary<CardValues, Sprite> ValueToSprite, List<List<GameObject>> CardLists)
   {
     for (int i = 0; i < game.PlayerList.Count(); i++)
     {
-      StartCoroutine(CreatePlayerStack(game.PlayerList[i], fieldPositions[i]));
+      StartCoroutine(CreatePlayerStack(game.PlayerList[i], playerPositions[i].transform));
     }
   }
 
@@ -72,7 +74,9 @@ public class SchafkopfController : MonoBehaviour
     card.GetComponent<UnityCard>().SchafKopfController = this;
     return card;
   }
+  #endregion
 
+  #region cardSelection
   public void SelectCard(GameObject card)
   {
     var currentCard = card.GetComponent<UnityCard>();
@@ -124,7 +128,24 @@ public class SchafkopfController : MonoBehaviour
     }
     throw new Exception("No Card Found");
   }
+  #endregion
 
+  #region round
+  public void MakeTurn(GameObject player)
+  {
+    player.GetComponent<Light>().enabled = true;
+  }
+
+  private void DisablePlayersExcept(GameObject player)
+  {
+    for (int i = 1; i < CardLists.Count(); i++)
+    {
+      
+    }
+  }
+
+
+  #endregion
   public void PutCardOnTable(GameObject card)
   {
     if (CardLists.First().Contains(card)) // Card is already on the table
@@ -144,9 +165,7 @@ public class SchafkopfController : MonoBehaviour
   private void RemoveCard(GameObject card)
   {
     foreach (var cardList in CardLists)
-    {
-      cardList.Remove(card);
-    }
+      cardList.Remove(card);    
   }
 
   // Update is called once per frame
