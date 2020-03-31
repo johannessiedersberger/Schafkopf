@@ -14,14 +14,17 @@ public class SchafkopfController : MonoBehaviour
   public List<List<GameObject>> CardLists = new List<List<GameObject>>();
   public Dictionary<CardValues, Sprite> ValueToSprite = new Dictionary<CardValues, Sprite>();
 
+  public SchafkopfGame Game { get; private set; }
+  public Sauspiel Sauspiel { get; private set; }
+
   // Start is called before the first frame update
   void Start()
   {
-    SchafkopfGame game = new SchafkopfGame();
+    Game = new SchafkopfGame();
     Table.GetComponent<Table>().SchafkopfController = this;
     SetCardValueToSprite(CardFaces, ValueToSprite);
     CardLists.Add(new List<GameObject>()); //Tabe list
-    DistributeCards(game, CardPrefab, PlayerStackPositions, ValueToSprite, CardLists);
+    DistributeCards(Game, CardPrefab, PlayerStackPositions, ValueToSprite, CardLists);
     MakeTurn(PlayerStackPositions[0]);
   }
 
@@ -74,6 +77,15 @@ public class SchafkopfController : MonoBehaviour
     card.GetComponent<UnityCard>().SchafKopfController = this;
     return card;
   }
+  #endregion
+
+  #region GameSelection
+
+  public void SelectGame(Player selectedPlayer, CardValues selectedCardValue)
+  {
+    Sauspiel = new Sauspiel(Game, selectedPlayer, selectedCardValue);
+  }
+
   #endregion
 
   #region cardSelection
