@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Schafkopf;
+using System;
 
 public class GameSelection : MonoBehaviour
 {
@@ -67,8 +68,18 @@ public class GameSelection : MonoBehaviour
     if (SelectedPlayer == null || SelectedAss == null)
       return;
 
-    GameController.SelectGame(SelectedPlayer, SelectedAss.Value);
-
+    try
+    {
+      GameController.SelectGame(SelectedPlayer, SelectedAss.Value);
+      var ui = GameObject.FindGameObjectWithTag("GameStartUI");
+      var table = GameObject.FindGameObjectWithTag("Table");
+      ui.SetActive(false);
+      GameController.Table.SetActive(true);
+    }
+    catch (Exception e)
+    {
+      Debug.Log("Game creation failed");
+    }
   }
 
 }

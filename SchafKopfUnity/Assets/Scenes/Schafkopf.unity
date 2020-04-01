@@ -1977,6 +1977,7 @@ MonoBehaviour:
   GrassAssButton: {fileID: 1540467193}
   HerzAssButton: {fileID: 501376211}
   SchellenAssButton: {fileID: 219070543}
+  StartButton: {fileID: 115988930}
   GameController: {fileID: 1347337935}
 --- !u!1 &1167653334
 GameObject:
