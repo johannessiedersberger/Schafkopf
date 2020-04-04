@@ -76,12 +76,32 @@ namespace Schafkopf
 
     #endregion
 
+    /// <summary>
+    /// Returns the card object that contains the value searched for
+    /// </summary>
+    /// <param name="value">The value of the card</param>
+    /// <returns></returns>
     public Card GetCardbyValue(CardValues value)
     {
+      Card searchedCard = null;
       foreach(var player in PlayerList)
       {
+        var cards = player.Cards.Where(card => card.CardValue == value);
+        if (cards.Any())
+          searchedCard = cards.First();
 
+        foreach(var stich in player.Stiche)
+        {
+          var s = stich.Where(card => card.CardValue == value);
+          if (s.Any())
+            searchedCard = s.First();
+        }
       }
+
+      if (searchedCard == null)
+        throw new Exception("Card not found");
+      else
+        return searchedCard;
     }
 
 
