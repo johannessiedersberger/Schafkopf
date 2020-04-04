@@ -55,5 +55,42 @@ namespace Schafkopf_Test
       Assert.That(card.CardValue, Is.EqualTo(CardValues.E10));
       Assert.That(card.Owner, Is.Not.Null);
     }
+
+    [Test]
+    public void TestRedistributeStich()
+    {
+      // Given
+      List<Player> players = new List<Player>();
+      players.Add(new Player(new List<Card>() { new Card(CardValues.EO) }));
+      players.Add(new Player(new List<Card>() { new Card(CardValues.H7) }));
+      players.Add(new Player(new List<Card>() { new Card(CardValues.E7) }));
+      players.Add(new Player(new List<Card>() { new Card(CardValues.EA) }));
+      SchafkopfGame game = new SchafkopfGame(players);
+
+      Sauspiel saupspiel = new Sauspiel(game, players[0], players[3].Cards[0].CardValue);
+      var spielKarten = new Card[] {
+        players[0].Cards[0],
+        players[1].Cards[0],
+        players[2].Cards[0],
+        players[3].Cards[0]
+      };
+
+      var hoechsteKarte = Sauspiel.CardComparison(spielKarten, players[0].Cards[0]);
+
+      // When
+      game.RedistributeStich(spielKarten, hoechsteKarte);
+
+      // Then
+      Assert.That(hoechsteKarte.CardValue, Is.EqualTo(CardValues.EO));
+      Assert.That(hoechsteKarte.Owner, Is.EqualTo(players[0]));
+      Assert.That(players[0].Stiche.Count(), Is.EqualTo(1));
+
+      foreach(var player in game.PlayerList)
+        Assert.That(player.Cards.Count(), Is.EqualTo(0));
+
+      for (int i = 1; i <= 3; i++)
+        Assert.That(players[i].Stiche.Count(), Is.EqualTo(0));
+      
+    }
   }
 }

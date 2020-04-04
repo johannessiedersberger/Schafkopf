@@ -104,6 +104,37 @@ namespace Schafkopf
         return searchedCard;
     }
 
+    /// <summary>
+    /// Redistributes the cards to the stiche list of 
+    /// the player with the highest card
+    /// </summary>
+    /// <param name="cards">All cards</param>
+    /// <param name="highestCard">The highest Card</param>
+    public void RedistributeStich(Card[] cards, Card highestCard)
+    {
+      if (cards.Contains(highestCard) == false)
+        throw new ArgumentException("The highest card needs to be included in the cards array");
 
+      var winner = highestCard.Owner;
+      winner.Stiche.Add(cards);
+
+      RemoveCardsFromPlayers(cards);
+    }
+
+    private void RemoveCardsFromPlayers(Card[] cards)
+    {
+      foreach(var card in cards)
+      {
+        foreach(var player in PlayerList)
+        {
+          if (player.Cards.Contains(card))
+          {
+            player.Cards.Remove(card);
+          }
+        }
+      }
+    }
+
+    
   }
 }

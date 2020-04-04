@@ -25,6 +25,12 @@ namespace Schafkopf
     /// </summary>
     public Card SearchedAss { get; private set; }
 
+    /// <summary>
+    /// Initializes a new Game
+    /// </summary>
+    /// <param name="game">The game</param>
+    /// <param name="chiefPlayer">The chief player</param>
+    /// <param name="assValue">The card value of the ass</param>
     public Sauspiel(SchafkopfGame game, Player chiefPlayer, CardValues assValue)
     {
       var ass = SearchCard(game, assValue);
@@ -69,7 +75,12 @@ namespace Schafkopf
         throw new InvalidOperationException("No Partner Found");
     }
  
-
+    /// <summary>
+    /// Returns the highest card
+    /// </summary>
+    /// <param name="cards">All cards</param>
+    /// <param name="firstCard">The card played first</param>
+    /// <returns></returns>
     public static Card CardComparison(Card[] cards, Card firstCard)
     {
       Card tempKarte = null;
