@@ -76,7 +76,13 @@ namespace Schafkopf
 
     #endregion
 
-    
+    public Card GetCardbyValue(CardValues value)
+    {
+      foreach(var player in PlayerList)
+      {
+
+      }
+    }
 
 
   }

@@ -13,6 +13,7 @@ public class SchafkopfController : MonoBehaviour
   public GameObject Table;
   public List<List<GameObject>> CardLists = new List<List<GameObject>>();
   public Dictionary<CardValues, Sprite> ValueToSprite = new Dictionary<CardValues, Sprite>();
+  private int _currentPlayerIndex = 0;
 
   public SchafkopfGame Game { get; private set; }
   public Sauspiel Sauspiel { get; private set; }
@@ -25,7 +26,6 @@ public class SchafkopfController : MonoBehaviour
     SetCardValueToSprite(CardFaces, ValueToSprite);
     CardLists.Add(new List<GameObject>()); //Tabe list
     DistributeCards(Game, CardPrefab, PlayerStackPositions, ValueToSprite, CardLists);
-    
   }
 
   #region gamestart
@@ -56,6 +56,7 @@ public class SchafkopfController : MonoBehaviour
 
       CardPrefab.GetComponent<SpriteRenderer>().sprite = ValueToSprite[player.Cards[j].CardValue];
       GameObject newCard = InstantiateCard(player, player.Cards[j].CardValue, CardPrefab, fieldPos, xOffset, zOffset);
+      newCard.GetComponent<UnityCard>().IsSelectable = false;
       cardList.Add(newCard);
 
       xOffset = xOffset + 0.5f;
@@ -84,7 +85,7 @@ public class SchafkopfController : MonoBehaviour
   public void SelectGame(Player selectedPlayer, CardValues selectedCardValue)
   {
     Sauspiel = new Sauspiel(Game, selectedPlayer, selectedCardValue);
-    MakeTurn(0);
+    MakeTurn(_currentPlayerIndex);
   }
 
   #endregion
@@ -103,7 +104,7 @@ public class SchafkopfController : MonoBehaviour
       currentCard.ChangeColor(true);
       currentCard.IsSelected = true;
     }
-    DeselectCardExcept(card);
+    DeselectAllCardsExcept(card);
   }
 
   public void DeselectAllCards()
@@ -118,7 +119,7 @@ public class SchafkopfController : MonoBehaviour
     }
   }
 
-  public void DeselectCardExcept(GameObject card)
+  public void DeselectAllCardsExcept(GameObject card)
   {
     foreach (var list in CardLists)
     {
@@ -192,12 +193,35 @@ public class SchafkopfController : MonoBehaviour
     RemoveCard(card);
     CardLists.First().Add(card);
     card.GetComponent<UnityCard>().IsSelectable = false;
+
+    if(CardLists.First().Count() == 4)
+    {
+
+    }
+
+    MakeTurn(GetNextPlayer());
   }
 
   private void RemoveCard(GameObject card)
   {
     foreach (var cardList in CardLists)
       cardList.Remove(card);
+  }
+
+  private int GetNextPlayer()
+  {
+    int lastPlayer = _currentPlayerIndex;
+    int nextPlayer;
+    if (lastPlayer >= 0 && lastPlayer < 3)
+    {
+      nextPlayer = ++lastPlayer;
+    }
+    else
+    {
+      nextPlayer = 0;
+    }
+    _currentPlayerIndex = nextPlayer;
+    return _currentPlayerIndex;
   }
 
   // Update is called once per frame

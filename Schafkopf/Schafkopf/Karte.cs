@@ -18,6 +18,9 @@ namespace Schafkopf
     S7, S8, S9, S10, SU, SO, SK, SA, // Schellen
   }
 
+  /// <summary>
+  /// The colors
+  /// </summary>
   public enum Color
   {
     Eichel,
@@ -26,6 +29,9 @@ namespace Schafkopf
     Schellen
   }
 
+  /// <summary>
+  /// The schlaege
+  /// </summary>
   public enum Schlag
   {
     Sieben,
@@ -38,22 +44,41 @@ namespace Schafkopf
     Ass
   }
 
+  /// <summary>
+  /// A Card with the owner
+  /// </summary>
   public class Card
   {
+    /// <summary>
+    /// The value of the cards
+    /// </summary>
     public CardValues CardValue { get; }
 
+    /// <summary>
+    /// The color value
+    /// </summary>
     public Color ColorValue => Farben(CardValue);
 
+    /// <summary>
+    /// The schlag value
+    /// </summary>
     public Schlag SchlagValue => Schlag(CardValue);
 
+    /// <summary>
+    /// The current owner of the card
+    /// </summary>
     public Player Owner { get; set; }
 
+    /// <summary>
+    /// Assigns the value of the card
+    /// </summary>
+    /// <param name="kartenwert"></param>
     public Card(CardValues kartenwert)
     {
       CardValue = kartenwert;
     }
 
-    public Color Farben(CardValues card)
+    private Color Farben(CardValues card)
     {
       var cardId = card.ToString();
 
@@ -70,7 +95,7 @@ namespace Schafkopf
     }
 
    
-    public static Schlag Schlag(CardValues card)
+    private static Schlag Schlag(CardValues card)
     {
       var cardString = card.ToString();
 

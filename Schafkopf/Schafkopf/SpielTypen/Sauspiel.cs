@@ -8,9 +8,21 @@ namespace Schafkopf
 {
   public class Sauspiel
   {
+    /// <summary>
+    /// The player that plays
+    /// </summary>
     public Player ChiefPlayer { get; private set; }
+    /// <summary>
+    /// The partner of the chief player
+    /// </summary>
     public Player ChiefPlayerPartner { get; private set; }
+    /// <summary>
+    /// The schafkopf game that contains the all cards and players
+    /// </summary>
     public SchafkopfGame Game { get; private set; }
+    /// <summary>
+    /// The ass card for which is searched for
+    /// </summary>
     public Card SearchedAss { get; private set; }
 
     public Sauspiel(SchafkopfGame game, Player chiefPlayer, CardValues assValue)
