@@ -25,7 +25,7 @@ public class SchafkopfController : MonoBehaviour
     SetCardValueToSprite(CardFaces, ValueToSprite);
     CardLists.Add(new List<GameObject>()); //Tabe list
     DistributeCards(Game, CardPrefab, PlayerStackPositions, ValueToSprite, CardLists);
-    MakeTurn(PlayerStackPositions[0]);
+    
   }
 
   #region gamestart
@@ -55,7 +55,7 @@ public class SchafkopfController : MonoBehaviour
       yield return new WaitForSeconds(0.05f);
 
       CardPrefab.GetComponent<SpriteRenderer>().sprite = ValueToSprite[player.Cards[j].CardValue];
-      GameObject newCard = InstantiateCard(player, player.Cards[j].CardValue,CardPrefab, fieldPos, xOffset, zOffset);     
+      GameObject newCard = InstantiateCard(player, player.Cards[j].CardValue, CardPrefab, fieldPos, xOffset, zOffset);
       cardList.Add(newCard);
 
       xOffset = xOffset + 0.5f;
@@ -84,6 +84,7 @@ public class SchafkopfController : MonoBehaviour
   public void SelectGame(Player selectedPlayer, CardValues selectedCardValue)
   {
     Sauspiel = new Sauspiel(Game, selectedPlayer, selectedCardValue);
+    MakeTurn(0);
   }
 
   #endregion
@@ -132,7 +133,7 @@ public class SchafkopfController : MonoBehaviour
 
   public GameObject GetSelectedCard()
   {
-    foreach(var list in CardLists)
+    foreach (var list in CardLists)
     {
       var selectedCards = list.Where(card => card.GetComponent<UnityCard>().IsSelected);
       if (selectedCards.Count() > 0)
@@ -143,16 +144,35 @@ public class SchafkopfController : MonoBehaviour
   #endregion
 
   #region round
-  public void MakeTurn(GameObject player)
+  public void MakeTurn(int playerIndex)
   {
-    player.GetComponent<Light>().enabled = true;
+    EnablePlayerCards(playerIndex);
+    DisablePlayersExcept(playerIndex);
   }
 
-  private void DisablePlayersExcept(GameObject player)
+  private void EnablePlayerCards(int playerIndex)
   {
-    for (int i = 1; i < CardLists.Count(); i++)
+    foreach (var card in CardLists[playerIndex + 1])
     {
-      
+      card.GetComponent<UnityCard>().IsSelectable = true;
+    }
+  }
+
+  private void DisablePlayersExcept(int playerIndex)
+  {
+    for (int i = 0; i < CardLists.Count(); i++)
+    {
+      if (i == playerIndex + 1)
+      {
+        // Do nothing
+      }
+      else
+      {
+        foreach (var card in CardLists[i])
+        {
+          card.GetComponent<UnityCard>().IsSelectable = false;
+        }
+      }
     }
   }
 
@@ -164,8 +184,8 @@ public class SchafkopfController : MonoBehaviour
       return;
 
     var newPos = Table.transform.position;
-    newPos.z = card.transform.position.z - CardLists.First().Count()*0.1f;
-    newPos.x += CardLists.First().Count()*0.4f;
+    newPos.z = card.transform.position.z - CardLists.First().Count() * 0.1f;
+    newPos.x += CardLists.First().Count() * 0.4f;
 
     card.transform.position = newPos;
 
@@ -177,7 +197,7 @@ public class SchafkopfController : MonoBehaviour
   private void RemoveCard(GameObject card)
   {
     foreach (var cardList in CardLists)
-      cardList.Remove(card);    
+      cardList.Remove(card);
   }
 
   // Update is called once per frame
