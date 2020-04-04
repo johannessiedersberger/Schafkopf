@@ -92,5 +92,14 @@ namespace Schafkopf_Test
         Assert.That(players[i].Stiche.Count(), Is.EqualTo(0));
       
     }
+
+    [Test]
+    public void TestGetPlayerIndex()
+    {
+      // Given
+      var game = new SchafkopfGame();
+      // When // Then
+      Assert.That(game.GetPlayerIndex(game.PlayerList[3]), Is.EqualTo(3));
+    }
   }
 }

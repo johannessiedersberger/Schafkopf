@@ -10,6 +10,7 @@ public class SchafkopfController : MonoBehaviour
   public Sprite[] CardFaces;
   public GameObject CardPrefab;
   public GameObject[] PlayerStackPositions;
+  public GameObject[] PlayerStichPositions;
   public GameObject Table;
   public List<List<GameObject>> CardLists = new List<List<GameObject>>();
   public Dictionary<CardValues, Sprite> ValueToSprite = new Dictionary<CardValues, Sprite>();
@@ -181,31 +182,55 @@ public class SchafkopfController : MonoBehaviour
   #endregion
   public void PutCardOnTable(GameObject card)
   {
-    if (CardLists.First().Contains(card)) // Card is already on the table
+    if (CardLists.First().Contains(card)) // card is already on the table
       return;
 
-    var newPos = Table.transform.position;
-    newPos.z = card.transform.position.z - CardLists.First().Count() * 0.1f;
-    newPos.x += CardLists.First().Count() * 0.4f;
+    MoveCardToTablePosition(card);
 
-    card.transform.position = newPos;
-
-    RemoveCard(card);
-    CardLists.First().Add(card);
-    card.GetComponent<UnityCard>().IsSelectable = false;
-
+    MoveCardToTableList(card);
+    
     if(CardLists.First().Count() == 4)
     {
-
+      EndTurn();
     }
 
     MakeTurn(GetNextPlayer());
   }
 
-  private void RemoveCard(GameObject card)
+  private void MoveCardToTablePosition(GameObject card)
+  {
+    // calculate new position
+    var newPos = Table.transform.position;
+    newPos.z = card.transform.position.z - CardLists.First().Count() * 0.1f;
+    newPos.x += CardLists.First().Count() * 0.4f;
+    card.transform.position = newPos;
+
+    card.GetComponent<UnityCard>().IsSelectable = false;
+  }
+
+  private void MoveCardToTableList(GameObject card)
   {
     foreach (var cardList in CardLists)
       cardList.Remove(card);
+    CardLists.First().Add(card);
+  }
+
+  private void EndTurn()
+  {
+    Card[] cards = CardLists.First().Select(card => Game.GetCardbyValue(card.GetComponent<UnityCard>().CardValue)).ToArray();
+    Card firstCard = Game.GetCardbyValue(CardLists.First()[0].GetComponent<UnityCard>().CardValue);
+    Card highestCard = Sauspiel.CardComparison(cards, firstCard);
+
+    var winner = highestCard.Owner;
+
+    Game.RedistributeStich(cards, highestCard);
+    foreach(var card in CardLists.First())
+    {
+      var winnerStichePos = PlayerStichPositions[Game.GetPlayerIndex(winner)];
+      card.transform.position = winnerStichePos.transform.position;
+      DeselectAllCards();
+    }
+    CardLists.First().Clear();
   }
 
   private int GetNextPlayer()

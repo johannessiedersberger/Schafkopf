@@ -135,6 +135,19 @@ namespace Schafkopf
       }
     }
 
-    
+    /// <summary>
+    /// Returns the player index in the player list 
+    /// </summary>
+    /// <param name="player">The player to search for</param>
+    /// <returns></returns>
+    public int GetPlayerIndex(Player player)
+    {
+      for (int i = 0; i < PlayerList.Count(); i++)
+      {
+        if (PlayerList[i] == player)
+          return i;
+      }
+      throw new Exception("Player not Found");
+    }
   }
 }
