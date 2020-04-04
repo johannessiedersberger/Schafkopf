@@ -231,6 +231,7 @@ public class SchafkopfController : MonoBehaviour
       DeselectAllCards();
     }
     CardLists.First().Clear();
+    _currentPlayerIndex = Game.GetPlayerIndex(winner) - 1;
   }
 
   private int GetNextPlayer()
