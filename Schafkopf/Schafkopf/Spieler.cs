@@ -14,7 +14,7 @@ namespace Schafkopf
     /// <summary>
     /// All stiche the player has made
     /// </summary>
-    public List<Card[]> Stiche { get; }
+    public List<Card[]> Stiche { get; } = new List<Card[]>();
     
     /// <summary>
     /// All cards the player holds

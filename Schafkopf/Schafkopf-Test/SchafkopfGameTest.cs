@@ -43,5 +43,17 @@ namespace Schafkopf_Test
         Assert.That(h.Any(x => !h.Add(x)), Is.EqualTo(false));
       }
     }
+
+    [Test]
+    public void TestGetCardByValue()
+    {
+      //Given 
+      var game = new SchafkopfGame();
+      // When
+      var card = game.GetCardbyValue(CardValues.E10);
+      // Then
+      Assert.That(card.CardValue, Is.EqualTo(CardValues.E10));
+      Assert.That(card.Owner, Is.Not.Null);
+    }
   }
 }
