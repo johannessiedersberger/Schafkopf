@@ -14,6 +14,8 @@ public class SchafkopfController : MonoBehaviour
   public GameObject Table;
   public List<List<GameObject>> CardLists = new List<List<GameObject>>();
   public Dictionary<CardValues, Sprite> ValueToSprite = new Dictionary<CardValues, Sprite>();
+  public GameObject GameResult;
+
   private int _currentPlayerIndex = 0;
 
   public SchafkopfGame Game { get; private set; }
@@ -195,6 +197,11 @@ public class SchafkopfController : MonoBehaviour
       if(CardLists.SelectMany(x => x).ToList().Count() == 0)
       {
         Debug.Log("Game is over!!!");
+        var pointsByPlayer = Game.CountStichPointsByPlayers();
+        var result = GameResult.GetComponent<GameResults>();
+        result.SetTextFieldValues(pointsByPlayer.Values.ToArray());
+        GameResult.SetActive(true);
+        GameObject.FindGameObjectWithTag("Table").SetActive(false);
       }
     }
 

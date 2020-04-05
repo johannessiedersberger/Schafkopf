@@ -21,6 +21,8 @@ public class GameSelection : MonoBehaviour
 
   public SchafkopfController GameController;
 
+  public GameResults GameResults;
+
   public Player SelectedPlayer { get; private set; }
 
   public Schafkopf.CardValues? SelectedAss { get; private set; }
@@ -76,7 +78,7 @@ public class GameSelection : MonoBehaviour
       ui.SetActive(false);
       GameController.Table.SetActive(true);
     }
-    catch (Exception e)
+    catch (Exception)
     {
       Debug.Log("Game creation failed");
     }
