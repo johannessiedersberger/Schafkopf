@@ -2973,6 +2973,7 @@ MonoBehaviour:
   - {fileID: 1361680023}
   - {fileID: 313552445}
   Table: {fileID: 443361770}
+  GameResult: {fileID: 1522596859}
 --- !u!4 &1347337936
 Transform:
   m_ObjectHideFlags: 0
@@ -3357,11 +3358,11 @@ GameObject:
   - component: {fileID: 1522596863}
   m_Layer: 5
   m_Name: GameResults
-  m_TagString: GameStartUI
+  m_TagString: GameEndUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1522596860
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3447,6 +3448,7 @@ MonoBehaviour:
   - {fileID: 1218189728}
   - {fileID: 230030776}
   - {fileID: 238859226}
+  RestartButton: {fileID: 1483538270}
 --- !u!1 &1540467191
 GameObject:
   m_ObjectHideFlags: 0
