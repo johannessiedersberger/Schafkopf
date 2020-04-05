@@ -149,5 +149,43 @@ namespace Schafkopf
       }
       throw new Exception("Player not Found");
     }
+
+    /// <summary>
+    /// Counts all points in the stiche list of the players 
+    /// </summary>
+    /// <returns>A dictionary with the points of the players</returns>
+    public Dictionary<Player, int> CountStichPointsByPlayers()
+    {
+      var points = new Dictionary<Player, int>();
+      foreach(var player in PlayerList)
+      {
+        var playerPoints = CountPoints(player.Stiche.SelectMany(card => card).ToList());
+        points.Add(player, playerPoints);
+      }
+      return points;
+    }
+
+    /// <summary>
+    /// Counts the points of a card list
+    /// </summary>
+    /// <param name="cards">The cards to count the points</param>
+    /// <returns></returns>
+    public int CountPoints(List<Card> cards)
+    {
+      var schlaege = Extensions.AllSchlaege().ToList();
+      schlaege.Reverse();
+      var points = new List<int> { 0, 0, 0, 2, 3, 4, 10, 11 };
+
+      int allPoints = 0;
+      foreach (Card card in cards)
+      {
+        for (int i = 0; i < schlaege.Count(); i++)
+        {
+          if (card.SchlagValue == schlaege[i])
+            allPoints += points[i];
+        }
+      }
+      return allPoints;
+    }
   }
 }

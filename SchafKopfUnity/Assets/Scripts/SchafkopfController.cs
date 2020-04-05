@@ -192,6 +192,10 @@ public class SchafkopfController : MonoBehaviour
     if(CardLists.First().Count() == 4)
     {
       EndTurn();
+      if(CardLists.SelectMany(x => x).ToList().Count() == 0)
+      {
+        Debug.Log("Game is over!!!");
+      }
     }
 
     MakeTurn(GetNextPlayer());
@@ -222,16 +226,22 @@ public class SchafkopfController : MonoBehaviour
     Card highestCard = Sauspiel.CardComparison(cards, firstCard);
 
     var winner = highestCard.Owner;
+    MoveStichToPlayerStichStack(winner);
 
+    DeselectAllCards();
+    CardLists.First().Clear();
     Game.RedistributeStich(cards, highestCard);
-    foreach(var card in CardLists.First())
+   
+    _currentPlayerIndex = Game.GetPlayerIndex(winner) - 1;
+  }
+
+  private void MoveStichToPlayerStichStack(Player winner)
+  {
+    foreach (var card in CardLists.First())
     {
       var winnerStichePos = PlayerStichPositions[Game.GetPlayerIndex(winner)];
-      card.transform.position = winnerStichePos.transform.position;
-      DeselectAllCards();
-    }
-    CardLists.First().Clear();
-    _currentPlayerIndex = Game.GetPlayerIndex(winner) - 1;
+      card.transform.position = winnerStichePos.transform.position;    
+    }   
   }
 
   private int GetNextPlayer()

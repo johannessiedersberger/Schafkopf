@@ -16,7 +16,7 @@ namespace Schafkopf_Test
       //Given // When
       var game = new SchafkopfGame();
       //Then
-      Assert.That(game.PlayerList.Count, Is.EqualTo(4));     
+      Assert.That(game.PlayerList.Count, Is.EqualTo(4));
     }
 
     [Test]
@@ -25,8 +25,8 @@ namespace Schafkopf_Test
       //Given
       var game = new SchafkopfGame();
       //Then
-      foreach(var player in game.PlayerList)
-        Assert.That(player.Cards.Count(), Is.EqualTo(8));      
+      foreach (var player in game.PlayerList)
+        Assert.That(player.Cards.Count(), Is.EqualTo(8));
     }
 
     [Test]
@@ -37,7 +37,7 @@ namespace Schafkopf_Test
       // When
       var allCards = game.PlayerList.SelectMany(d => d.Cards).ToList();
       // Then
-      foreach(var card in allCards)
+      foreach (var card in allCards)
       {
         var h = new HashSet<int>();
         Assert.That(h.Any(x => !h.Add(x)), Is.EqualTo(false));
@@ -85,12 +85,12 @@ namespace Schafkopf_Test
       Assert.That(hoechsteKarte.Owner, Is.EqualTo(players[0]));
       Assert.That(players[0].Stiche.Count(), Is.EqualTo(1));
 
-      foreach(var player in game.PlayerList)
+      foreach (var player in game.PlayerList)
         Assert.That(player.Cards.Count(), Is.EqualTo(0));
 
       for (int i = 1; i <= 3; i++)
         Assert.That(players[i].Stiche.Count(), Is.EqualTo(0));
-      
+
     }
 
     [Test]
@@ -100,6 +100,58 @@ namespace Schafkopf_Test
       var game = new SchafkopfGame();
       // When // Then
       Assert.That(game.GetPlayerIndex(game.PlayerList[3]), Is.EqualTo(3));
+    }
+
+    [Test]
+    public void TestCountPoints()
+    {
+      // Given
+      List<Player> players = new List<Player>();
+      players.Add(new Player(new List<Card>() { new Card(CardValues.EO) }));
+      players.Add(new Player(new List<Card>() { new Card(CardValues.H7) }));
+      players.Add(new Player(new List<Card>() { new Card(CardValues.E7) }));
+      players.Add(new Player(new List<Card>() { new Card(CardValues.EA) }));
+      SchafkopfGame game = new SchafkopfGame(players);
+
+      Sauspiel saupspiel = new Sauspiel(game, players[0], players[3].Cards[0].CardValue);
+      var spielKarten = new Card[] {
+        players[0].Cards[0],
+        players[1].Cards[0],
+        players[2].Cards[0],
+        players[3].Cards[0]
+      };
+
+      // When / Then
+      Assert.That(game.CountPoints(spielKarten.ToList()), Is.EqualTo(3 + 0 + 0 + 11));
+    }
+
+    [Test]
+    public void TestCountPointsByPlayer()
+    {
+      // Given
+      List<Player> players = new List<Player>();
+      players.Add(new Player(new List<Card>() { new Card(CardValues.EO) }));
+      players.Add(new Player(new List<Card>() { new Card(CardValues.H7) }));
+      players.Add(new Player(new List<Card>() { new Card(CardValues.E7) }));
+      players.Add(new Player(new List<Card>() { new Card(CardValues.EA) }));
+      SchafkopfGame game = new SchafkopfGame(players);
+
+      Sauspiel saupspiel = new Sauspiel(game, players[0], players[3].Cards[0].CardValue);
+      var spielKarten = new Card[] {
+        players[0].Cards[0],
+        players[1].Cards[0],
+        players[2].Cards[0],
+        players[3].Cards[0]
+      };
+      // When
+      var highestCard = Sauspiel.CardComparison(spielKarten, spielKarten[0]);
+      game.RedistributeStich(spielKarten, highestCard);
+      var pointsByPlayer = game.CountStichPointsByPlayers();
+      // Then
+      Assert.That(pointsByPlayer[players[0]], Is.EqualTo(3 + 0 + 0 + 11));
+      for (int i = 1; i < players.Count(); i++)
+        Assert.That(pointsByPlayer[players[i]], Is.EqualTo(0));
+
     }
   }
 }

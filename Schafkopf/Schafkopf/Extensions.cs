@@ -32,7 +32,7 @@ namespace Schafkopf
     }
 
     /// <summary>
-    /// Returns an Array of all schlaege (7,8,9,10,U,O,K,A)
+    /// Returns an Array of all schlaege (7,8,9,U,O,K,10,A)
     /// </summary>
     /// <returns></returns>
     public static Schlag[] AllSchlaege()
