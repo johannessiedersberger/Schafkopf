@@ -43,11 +43,6 @@ public class GameSelection : MonoBehaviour
     StartButton.onClick.AddListener(StartGame);
   }
 
-  // Update is called once per frame
-  void Update()
-  {
-
-  }
 
   // Players
   private void PlayerOneSelected() => SelectedPlayer = GameController.Game.PlayerList[0];

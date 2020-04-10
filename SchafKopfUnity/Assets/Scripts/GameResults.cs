@@ -7,6 +7,7 @@ public class GameResults : MonoBehaviour
 {
   public GameSelection GameSelection;
   public SchafkopfController Controller;
+  public GameObject GameStartUI;
 
   public GameObject[] PointTextFields;
   public Button RestartButton;
@@ -14,13 +15,14 @@ public class GameResults : MonoBehaviour
   // Start is called before the first frame update
   void Start()
   {
-
+    RestartButton.onClick.AddListener(RestartGame);
   }
 
-  // Update is called once per frame
-  void Update()
+  private void RestartGame()
   {
-
+    this.gameObject.SetActive(false);
+    GameStartUI.SetActive(true);
+    Controller.Start();
   }
 
   public void SetTextFieldValues(int[] values)

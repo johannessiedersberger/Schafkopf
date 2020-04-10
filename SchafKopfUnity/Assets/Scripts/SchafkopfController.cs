@@ -13,23 +13,32 @@ public class SchafkopfController : MonoBehaviour
   public GameObject[] PlayerStichPositions;
   public GameObject Table;
   public List<List<GameObject>> CardLists = new List<List<GameObject>>();
-  public Dictionary<CardValues, Sprite> ValueToSprite = new Dictionary<CardValues, Sprite>();
+  public Dictionary<CardValues, Sprite> ValueToSprite;
   public GameObject GameResult;
 
-  private int _currentPlayerIndex = 0;
+  private int _currentPlayerIndex;
 
   public SchafkopfGame Game { get; private set; }
   public Sauspiel Sauspiel { get; private set; }
 
   // Start is called before the first frame update
-  void Start()
+  public void Start()
   {
+    _currentPlayerIndex = 0;
+
     Game = new SchafkopfGame();
     Table.GetComponent<Table>().SchafkopfController = this;
+
+    ValueToSprite = new Dictionary<CardValues, Sprite>();
     SetCardValueToSprite(CardFaces, ValueToSprite);
+
+    DestroyOldCards();
+    CardLists = new List<List<GameObject>>();
     CardLists.Add(new List<GameObject>()); //Tabe list
     DistributeCards(Game, CardPrefab, PlayerStackPositions, ValueToSprite, CardLists);
   }
+
+  
 
   #region gamestart
   private static void SetCardValueToSprite(Sprite[] cardFaces, Dictionary<CardValues, Sprite> dictionary)
@@ -37,6 +46,15 @@ public class SchafkopfController : MonoBehaviour
     var cardValues = Enum.GetValues(typeof(CardValues)).Cast<CardValues>().ToArray();
     for (int i = 0; i < cardFaces.Length; i++)
       dictionary.Add(cardValues[i], cardFaces[i]);
+  }
+
+  private void DestroyOldCards()
+  {
+    var cards = GameObject.FindGameObjectsWithTag("Card");
+    foreach(var card in cards)
+    {
+      Destroy(card);
+    }
   }
 
   private void DistributeCards(SchafkopfGame game, GameObject CardPrefab, GameObject[] playerPositions, Dictionary<CardValues, Sprite> ValueToSprite, List<List<GameObject>> CardLists)
