@@ -131,7 +131,7 @@ namespace Schafkopf
       }
       return true;
     }
-
+                                      //E7            //EO
     private static bool IsNeededCard(Card firstCard, Card cardToCheck)
     {
       if (IsHerzOberUnter(firstCard))
@@ -140,7 +140,7 @@ namespace Schafkopf
       }
       else // Colors
       {
-        return firstCard.ColorValue == cardToCheck.ColorValue;
+        return firstCard.ColorValue == cardToCheck.ColorValue && IsHerzOberUnter(cardToCheck) == false;
       }
     }
 

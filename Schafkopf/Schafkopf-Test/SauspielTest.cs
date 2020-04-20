@@ -254,6 +254,29 @@ namespace Schafkopf_Test
       Assert.Throws<ArgumentException>(() => Sauspiel.CardComparison(spielKarten, spielKarten[0]));
     }
 
+    [Test]
+    public void TestPassTrumpFalse()
+    {
+      // Given
+      List<Player> players = new List<Player>();
+      players.Add(new Player(new List<Card>() { new Card(CardValues.G7) }));
+      players.Add(new Player(new List<Card>() { new Card(CardValues.GO), new Card(CardValues.G9) }));
+      players.Add(new Player(new List<Card>() { new Card(CardValues.S7) }));
+      players.Add(new Player(new List<Card>() { new Card(CardValues.GA) }));
+      SchafkopfGame game = new SchafkopfGame(players);
+
+      Sauspiel saupspiel = new Sauspiel(game, players[0], players[3].Cards[0].CardValue);
+      var spielKarten = new Card[] {
+        players[0].Cards[0],
+        players[1].Cards[0],
+        players[2].Cards[0],
+        players[3].Cards[0]
+      };
+      // When / Then 
+      Assert.That(Sauspiel.CheckSchlagFarbePassed(spielKarten, spielKarten[0]) == false);
+      Assert.Throws<ArgumentException>(() => Sauspiel.CardComparison(spielKarten, spielKarten[0]));
+    }
+
     #endregion
   }
 }
