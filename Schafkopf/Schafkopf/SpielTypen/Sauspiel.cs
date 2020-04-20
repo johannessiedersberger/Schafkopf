@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Schafkopf
 {
+  /// <summary>
+  /// A Sauspiel where 2 players play
+  /// against the others
+  /// </summary>
   public class Sauspiel
   {
     /// <summary>
@@ -99,6 +103,11 @@ namespace Schafkopf
       }
 
       return cards[0]; // highest Karte
+    }
+
+    public static bool CheckSchlagFarbe(Card[] cards, Card firstCard)
+    {
+      
     }
 
     internal static Card HighestCard(Card card1, Card card2, Card firstCardPlayed) // 2 Karten
