@@ -105,9 +105,26 @@ namespace Schafkopf
       return cards[0]; // highest Karte
     }
 
-    public static bool CheckSchlagFarbe(Card[] cards, Card firstCard)
+    internal static bool CheckSchlagFarbePassed(Card[] cards, Card firstCard)
     {
-      
+      foreach(var card in cards)
+      {
+        var firstColor = firstCard.ColorValue;
+        var currentColor = card.ColorValue;
+
+        if (firstCard.CardValue != card.CardValue // Not start card
+          && firstColor != currentColor           // Not same color
+          && HasPlayerFirstColor(firstColor, card.Owner)) // Player has first color value
+        {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    private static bool HasPlayerFirstColor(Color firstColorValue, Player player)
+    {
+      return player.Cards.Where(c => c.ColorValue == firstColorValue).Count() > 0;
     }
 
     internal static Card HighestCard(Card card1, Card card2, Card firstCardPlayed) // 2 Karten
