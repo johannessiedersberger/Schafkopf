@@ -87,6 +87,9 @@ namespace Schafkopf
     /// <returns></returns>
     public static Card CardComparison(Card[] cards, Card firstCard)
     {
+      if (CheckSchlagFarbePassed(cards, firstCard) == false)
+        throw new ArgumentException("The player has to pass the color played first, if he has it");
+
       Card tempKarte = null;
 
       for (int write = 0; write < cards.Length; write++)

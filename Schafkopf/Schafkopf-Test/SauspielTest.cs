@@ -251,6 +251,7 @@ namespace Schafkopf_Test
       };
       // When / Then 
       Assert.That(Sauspiel.CheckSchlagFarbePassed(spielKarten, spielKarten[0]) == false);
+      Assert.Throws<ArgumentException>(() => Sauspiel.CardComparison(spielKarten, spielKarten[0]));
     }
 
     #endregion
