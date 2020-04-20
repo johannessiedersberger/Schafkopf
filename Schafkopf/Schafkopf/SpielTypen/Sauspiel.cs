@@ -46,7 +46,7 @@ namespace Schafkopf
 
       if (chiefPlayer == SearchGamePartner(game, ass))
         throw new InvalidOperationException("Der Spieler hat das Ass selber, auf das er spielen will");
-      
+
       Game = game;
       ChiefPlayer = chiefPlayer;
       ChiefPlayerPartner = SearchGamePartner(game, ass);
@@ -55,7 +55,7 @@ namespace Schafkopf
 
     private static Card SearchCard(SchafkopfGame game, CardValues cardValue)
     {
-      foreach(var player in game.PlayerList)
+      foreach (var player in game.PlayerList)
       {
         var searchCard = player.Cards.Where(k => k.CardValue == cardValue);
         if (searchCard.Count() != 0)
@@ -78,7 +78,7 @@ namespace Schafkopf
       else
         throw new InvalidOperationException("No Partner Found");
     }
- 
+
     /// <summary>
     /// Returns the highest card
     /// </summary>
@@ -96,7 +96,7 @@ namespace Schafkopf
       {
         for (int sort = 0; sort < cards.Length - 1; sort++)
         {
-          if(cards[sort] != HighestCard(cards[sort], cards[sort+1], firstCard))
+          if (cards[sort] != HighestCard(cards[sort], cards[sort + 1], firstCard))
           {
             tempKarte = cards[sort + 1];
             cards[sort + 1] = cards[sort];
@@ -117,14 +117,14 @@ namespace Schafkopf
     /// <returns></returns>
     public static bool CheckSchlagFarbePassed(Card[] cards, Card firstCard)
     {
-      foreach(var card in cards)
+      foreach (var card in cards)
       {
         var firstColor = firstCard.ColorValue;
         var currentColor = card.ColorValue;
 
-        if (firstCard.CardValue != card.CardValue // Not start card
-          && firstColor != currentColor           // Not same color
-          && HasPlayerFirstColor(firstColor, card.Owner)) // Player has first color value
+        if (firstCard.CardValue != card.CardValue // current card is not the start card
+          && IsNeededCard(firstCard, card) == false // did not pass needed card
+          && HasPlayerNeededCard(firstCard, card.Owner)) // Player has needed card
         {
           return false;
         }
@@ -132,14 +132,39 @@ namespace Schafkopf
       return true;
     }
 
-    private static bool HasPlayerFirstColor(Color firstColorValue, Player player)
+    private static bool IsNeededCard(Card firstCard, Card cardToCheck)
     {
-      return player.Cards.Where(c => c.ColorValue == firstColorValue).Count() > 0;
+      if (IsHerzOberUnter(firstCard))
+      {
+        return IsHerzOberUnter(cardToCheck);
+      }
+      else // Colors
+      {
+        return firstCard.ColorValue == cardToCheck.ColorValue;
+      }
+    }
+
+    private static bool HasPlayerNeededCard(Card firstCard, Player player)
+    {
+      if (IsHerzOberUnter(firstCard))
+      {
+        return player.Cards.Where(c => IsHerzOberUnter(c)).Count() > 0;
+      }
+      else // Color
+      {
+        return player.Cards.Where(c => c.ColorValue == firstCard.ColorValue).Count() > 0;
+      }
+
+    }
+   
+    private static bool IsHerzOberUnter(Card cardToCheck)
+    {
+      return cardToCheck.SchlagValue == Schlag.Ober || cardToCheck.SchlagValue == Schlag.Unter || cardToCheck.ColorValue == Color.Herz;
     }
 
     internal static Card HighestCard(Card card1, Card card2, Card firstCardPlayed) // 2 Karten
     {
-      Card[] cards = new Card[] { card1 , card2 };
+      Card[] cards = new Card[] { card1, card2 };
       var ober = GetOber(cards);
       var unter = GetUnter(cards);
       var herzen = GetHerzen(cards);
@@ -151,15 +176,15 @@ namespace Schafkopf
         else // nur 1 Ober
           return ober[0];
       }
-      else if(unter.Length > 0) // Unter
+      else if (unter.Length > 0) // Unter
       {
         if (unter.Length == 2)
           return HighestColor(cards);
         else // nur 1 Unter
           return unter[0];
       }
-      else if(herzen.Length > 0) // Herz
-      {       
+      else if (herzen.Length > 0) // Herz
+      {
         if (herzen.Count() == 2)
           return HighestPoints(cards);
         else // Herzen == 1
@@ -175,12 +200,12 @@ namespace Schafkopf
         {
           var ersteKarteFarben = cards.Where(karte => karte.ColorValue == firstCardPlayed.ColorValue);
 
-          if(ersteKarteFarben.Count() == 1)
+          if (ersteKarteFarben.Count() == 1)
             return ersteKarteFarben.First();
 
           return cards[0];
-        }         
-      }     
+        }
+      }
     }
 
     private static Card[] GetOber(Card[] cards)
@@ -207,7 +232,7 @@ namespace Schafkopf
         throw new ArgumentException("Gleiche Farben");
 
       Color[] colors = Extensions.AllColors();
-      foreach(Color f in colors)
+      foreach (Color f in colors)
       {
         var result = cards.Where(card => card.ColorValue == f);
         if (result.Count() != 0)

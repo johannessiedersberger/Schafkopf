@@ -214,7 +214,7 @@ namespace Schafkopf_Test
     {
       // Given
       List<Player> players = new List<Player>();
-      players.Add(new Player(new List<Card>() { new Card(CardValues.G7) }));
+      players.Add(new Player(new List<Card>() { new Card(CardValues.EO), new Card(CardValues.G7) }));
       players.Add(new Player(new List<Card>() { new Card(CardValues.S8) }));
       players.Add(new Player(new List<Card>() { new Card(CardValues.S7) }));
       players.Add(new Player(new List<Card>() { new Card(CardValues.GA) }));
