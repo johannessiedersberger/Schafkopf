@@ -205,6 +205,15 @@ public class SchafkopfController : MonoBehaviour
     if (CardLists.First().Contains(card)) // card is already on the table
       return;
 
+    if(CardLists.First().Count() > 0)
+    {
+      List<Card> cards = CardLists.First().Select(c => Game.GetCardbyValue(c.GetComponent<UnityCard>().CardValue)).ToList();
+      cards.Add(Game.GetCardbyValue(card.GetComponent<UnityCard>().CardValue));
+      Card firstCard = Game.GetCardbyValue(CardLists.First()[0].GetComponent<UnityCard>().CardValue);
+      if (Sauspiel.CheckSchlagFarbePassed(cards.ToArray(), firstCard) == false)
+        return;
+    }
+
     MoveCardToTablePosition(card);
 
     MoveCardToTableList(card);
@@ -214,16 +223,21 @@ public class SchafkopfController : MonoBehaviour
       EndTurn();
       if(CardLists.SelectMany(x => x).ToList().Count() == 0)
       {
-        Debug.Log("Game is over!!!");
-        var pointsByPlayer = Game.CountStichPointsByPlayers();
-        var result = GameResult.GetComponent<GameResults>();
-        result.SetTextFieldValues(pointsByPlayer.Values.ToArray());
-        GameResult.SetActive(true);
-        GameObject.FindGameObjectWithTag("Table").SetActive(false);
+        GameOver();
       }
     }
 
     MakeTurn(GetNextPlayer());
+  }
+
+  private void GameOver()
+  {
+    Debug.Log("Game is over!!!");
+    var pointsByPlayer = Game.CountStichPointsByPlayers();
+    var result = GameResult.GetComponent<GameResults>();
+    result.SetTextFieldValues(pointsByPlayer.Values.ToArray());
+    GameResult.SetActive(true);
+    GameObject.FindGameObjectWithTag("Table").SetActive(false);
   }
 
   private void MoveCardToTablePosition(GameObject card)

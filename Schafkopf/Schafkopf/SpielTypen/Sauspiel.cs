@@ -108,7 +108,14 @@ namespace Schafkopf
       return cards[0]; // highest Karte
     }
 
-    internal static bool CheckSchlagFarbePassed(Card[] cards, Card firstCard)
+    /// <summary>
+    /// Checks if the player passes the right color 
+    /// that was played first, if he owns it
+    /// </summary>
+    /// <param name="cards">All cards</param>
+    /// <param name="firstCard">The first card</param>
+    /// <returns></returns>
+    public static bool CheckSchlagFarbePassed(Card[] cards, Card firstCard)
     {
       foreach(var card in cards)
       {

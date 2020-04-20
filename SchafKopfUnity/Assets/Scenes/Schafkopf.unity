@@ -3443,6 +3443,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameSelection: {fileID: 910728629}
   Controller: {fileID: 1347337935}
+  GameStartUI: {fileID: 910728625}
   PointTextFields:
   - {fileID: 247807727}
   - {fileID: 1218189728}
