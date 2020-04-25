@@ -152,9 +152,8 @@ namespace Schafkopf
       }
       else // Color
       {
-        return player.Cards.Where(c => c.ColorValue == firstCard.ColorValue).Count() > 0;
+        return player.Cards.Where(c => c.ColorValue == firstCard.ColorValue && IsHerzOberUnter(c) == false).Count() > 0;
       }
-
     }
    
     private static bool IsHerzOberUnter(Card cardToCheck)
